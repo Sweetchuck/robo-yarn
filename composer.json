@@ -1,0 +1,45 @@
+{
+    "name": "cheppers/robo-yarn",
+    "description": "Template to create a new Robo task.",
+    "license": "GPL-2.0",
+    "config": {
+        "bin-dir": "bin",
+        "sort-packages": true
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "require": {
+        "php": ">=7.1",
+        "cheppers/asset-jar": "^0.0",
+        "consolidation/robo": "^1.0"
+    },
+    "require-dev": {
+        "cheppers/git-hooks": "^0.0",
+        "cheppers/robo-git": "^0.0.3",
+        "cheppers/robo-phpcs": "^0.0.12",
+        "codeception/codeception": "^2.2",
+        "danielstjules/stringy": "^2.3",
+        "symfony/finder": "^3.2",
+        "webmozart/path-util": "^2.3"
+    },
+    "autoload": {
+        "psr-4": {
+            "Cheppers\\Robo\\Yarn\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Cheppers\\Robo\\Yarn\\Test\\Helper\\": "tests/_support/Helper/",
+            "Cheppers\\Robo\\Yarn\\Tests\\Acceptance\\": "tests/acceptance/",
+            "Cheppers\\Robo\\Yarn\\Tests\\Unit\\": "tests/unit/"
+        }
+    },
+    "scripts": {
+        "post-install-cmd": [
+            "\\Cheppers\\Robo\\Yarn\\Composer\\Scripts::postInstallCmd"
+        ],
+        "post-update-cmd": [
+            "\\Cheppers\\Robo\\Yarn\\Composer\\Scripts::postUpdateCmd"
+        ]
+    }
+}
