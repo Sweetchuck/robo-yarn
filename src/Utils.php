@@ -1,6 +1,6 @@
 <?php
 
-namespace Cheppers\Robo\Yarn;
+namespace Sweetchuck\Robo\Yarn;
 
 class Utils
 {

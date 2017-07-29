@@ -1,8 +1,8 @@
 <?php
 
-namespace Cheppers\Robo\Yarn\Task;
+namespace Sweetchuck\Robo\Yarn\Task;
 
-use Cheppers\Robo\Yarn\Option\CommonOptions;
+use Sweetchuck\Robo\Yarn\Option\CommonOptions;
 
 class CommonTask extends BaseTask
 {

@@ -1,5 +1,5 @@
 
-namespace: Cheppers\Robo\Yarn\Test
+namespace: Sweetchuck\Robo\Yarn\Test
 
 actor: Tester
 
