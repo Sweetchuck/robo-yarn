@@ -2,8 +2,6 @@
 
 namespace Sweetchuck\Robo\Yarn\Task;
 
-use Sweetchuck\AssetJar\AssetJarAware;
-use Sweetchuck\AssetJar\AssetJarAwareInterface;
 use Sweetchuck\Robo\Yarn\Option\BaseOptions;
 use Sweetchuck\Robo\Yarn\Utils;
 use Robo\Common\OutputAwareTrait;
@@ -14,9 +12,8 @@ use Robo\Task\BaseTask as RoboBaseTask;
 use Robo\TaskInfo;
 use Symfony\Component\Process\Process;
 
-abstract class BaseTask extends RoboBaseTask implements AssetJarAwareInterface, CommandInterface, OutputAwareInterface
+abstract class BaseTask extends RoboBaseTask implements CommandInterface, OutputAwareInterface
 {
-    use AssetJarAware;
     use OutputAwareTrait;
     use BaseOptions;
 
@@ -208,7 +205,6 @@ abstract class BaseTask extends RoboBaseTask implements AssetJarAwareInterface, 
             ->runHeader()
             ->runAction()
             ->runProcessOutputs()
-            ->runReleaseAssets()
             ->runReturn();
     }
 
@@ -247,31 +243,23 @@ abstract class BaseTask extends RoboBaseTask implements AssetJarAwareInterface, 
         return $this;
     }
 
-    /**
-     * @return $this
-     */
-    protected function runReleaseAssets()
+    protected function runReturn(): Result
     {
-        if ($this->hasAssetJar()) {
-            $assetJar = $this->getAssetJar();
-            foreach ($this->assets as $name => $value) {
-                $mapping = $this->getAssetJarMap($name);
-                if ($mapping) {
-                    $assetJar->setValue($mapping, $value);
-                }
+        $assetNamePrefix = $this->getAssetNamePrefix();
+        if ($assetNamePrefix === '') {
+            $data = $this->assets;
+        } else {
+            $data = [];
+            foreach ($this->assets as $key => $value) {
+                $data["{$assetNamePrefix}{$key}"] = $value;
             }
         }
 
-        return $this;
-    }
-
-    protected function runReturn(): Result
-    {
         return new Result(
             $this,
             $this->getTaskResultCode(),
             $this->getTaskResultMessage(),
-            $this->assets
+            $data
         );
     }
 

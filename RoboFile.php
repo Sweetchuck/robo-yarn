@@ -333,6 +333,7 @@ class RoboFile extends \Robo\Tasks
 
         $files = [
             'src/',
+            'src-dev/Composer/',
             'tests/_support/Helper/',
             'tests/acceptance/',
             'tests/unit/',
@@ -344,9 +345,6 @@ class RoboFile extends \Robo\Tasks
             'standards' => ['PSR2'],
             'lintReporters' => [
                 'lintVerboseReporter' => null,
-            ],
-            'ignore' => [
-                'src/GitHooks/',
             ],
         ];
 
