@@ -2,12 +2,11 @@
 
 namespace Sweetchuck\Robo\Yarn\Tests\Task;
 
-use Sweetchuck\AssetJar\AssetJar;
 use Sweetchuck\Robo\Yarn\Task\YarnVersionTask;
 use Codeception\Test\Unit;
 use Codeception\Util\Stub;
 use Robo\Robo;
-use Sweetchuck\Robo\Yarn\Test\Helper\Dummy\Output as DummyOutput;
+use Sweetchuck\Codeception\Module\RoboTaskRunner\DummyOutput;
 use Sweetchuck\Robo\Yarn\Test\Helper\Dummy\Process as DummyProcess;
 
 class YarnVersionTaskTest extends Unit
