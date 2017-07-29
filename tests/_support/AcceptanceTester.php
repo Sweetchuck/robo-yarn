@@ -1,6 +1,6 @@
 <?php
 
-namespace Cheppers\Robo\Yarn\Test;
+namespace Sweetchuck\Robo\Yarn\Test;
 
 /**
  * Inherited Methods

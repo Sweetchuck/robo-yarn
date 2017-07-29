@@ -1,22 +1,22 @@
 <?php
 
-namespace Cheppers\Robo\Yarn\Composer;
+namespace Sweetchuck\Robo\Yarn\Composer;
 
-use Cheppers\GitHooks\Main as GitHooksComposerScripts;
 use Composer\Script\Event;
+use Sweetchuck\GitHooks\Composer\Scripts as GitHooks;
 
 class Scripts
 {
     public static function postInstallCmd(Event $event): bool
     {
-        GitHooksComposerScripts::deploy($event);
+        GitHooks::deploy($event);
 
         return true;
     }
 
     public static function postUpdateCmd(Event $event): bool
     {
-        GitHooksComposerScripts::deploy($event);
+        GitHooks::deploy($event);
 
         return true;
     }

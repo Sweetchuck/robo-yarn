@@ -1,6 +1,6 @@
 <?php
 
-namespace Cheppers\Robo\Yarn\Option;
+namespace Sweetchuck\Robo\Yarn\Option;
 
 trait BaseOptions
 {

@@ -1,45 +1,47 @@
 {
-    "name": "cheppers/robo-yarn",
+    "name": "sweetchuck/robo-yarn",
     "description": "Template to create a new Robo task.",
     "license": "GPL-2.0",
     "config": {
         "bin-dir": "bin",
-        "sort-packages": true
+        "sort-packages": true,
+        "optimize-autoloader": true
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
     "require": {
         "php": ">=7.1",
-        "cheppers/asset-jar": "^0.0",
+        "sweetchuck/asset-jar": "^0.0",
         "consolidation/robo": "^1.0"
     },
     "require-dev": {
-        "cheppers/git-hooks": "^0.0",
-        "cheppers/robo-git": "^0.0.3",
-        "cheppers/robo-phpcs": "^0.0.12",
+        "sweetchuck/git-hooks": "^0.0",
+        "sweetchuck/robo-git": "^0.0",
+        "sweetchuck/robo-phpcs": "^0.0",
         "codeception/codeception": "^2.2",
-        "danielstjules/stringy": "^2.3",
+        "danielstjules/stringy": "^3.1",
         "symfony/finder": "^3.2",
         "webmozart/path-util": "^2.3"
     },
     "autoload": {
         "psr-4": {
-            "Cheppers\\Robo\\Yarn\\": "src/"
+            "Sweetchuck\\Robo\\Yarn\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Cheppers\\Robo\\Yarn\\Test\\Helper\\": "tests/_support/Helper/",
-            "Cheppers\\Robo\\Yarn\\Tests\\Acceptance\\": "tests/acceptance/",
-            "Cheppers\\Robo\\Yarn\\Tests\\Unit\\": "tests/unit/"
+            "Sweetchuck\\Robo\\Yarn\\Composer\\": "src-dev/Composer/",
+            "Sweetchuck\\Robo\\Yarn\\Test\\Helper\\": "tests/_support/Helper/",
+            "Sweetchuck\\Robo\\Yarn\\Tests\\Acceptance\\": "tests/acceptance/",
+            "Sweetchuck\\Robo\\Yarn\\Tests\\Unit\\": "tests/unit/"
         }
     },
     "scripts": {
         "post-install-cmd": [
-            "\\Cheppers\\Robo\\Yarn\\Composer\\Scripts::postInstallCmd"
+            "\\Sweetchuck\\Robo\\Yarn\\Composer\\Scripts::postInstallCmd"
         ],
         "post-update-cmd": [
-            "\\Cheppers\\Robo\\Yarn\\Composer\\Scripts::postUpdateCmd"
+            "\\Sweetchuck\\Robo\\Yarn\\Composer\\Scripts::postUpdateCmd"
         ]
     }
 }

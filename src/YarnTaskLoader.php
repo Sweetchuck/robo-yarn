@@ -1,13 +1,13 @@
 <?php
 
-namespace Cheppers\Robo\Yarn;
+namespace Sweetchuck\Robo\Yarn;
 
 use Robo\Collection\CollectionBuilder;
 
 trait YarnTaskLoader
 {
     /**
-     * @return \Cheppers\Robo\Yarn\Task\YarnInstallTask|\Robo\Collection\CollectionBuilder
+     * @return \Sweetchuck\Robo\Yarn\Task\YarnInstallTask|\Robo\Collection\CollectionBuilder
      */
     protected function taskYarnInstall(array $options = []): CollectionBuilder
     {
@@ -15,7 +15,7 @@ trait YarnTaskLoader
     }
 
     /**
-     * @return \Cheppers\Robo\Yarn\Task\YarnVersionTask|\Robo\Collection\CollectionBuilder
+     * @return \Sweetchuck\Robo\Yarn\Task\YarnVersionTask|\Robo\Collection\CollectionBuilder
      */
     protected function taskYarnVersion(array $options = []): CollectionBuilder
     {

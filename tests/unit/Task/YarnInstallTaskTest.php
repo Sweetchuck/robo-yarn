@@ -1,14 +1,14 @@
 <?php
 
-namespace Cheppers\Robo\Yarn\Tests\Task;
+namespace Sweetchuck\Robo\Yarn\Tests\Task;
 
-use Cheppers\Robo\Yarn\Task\YarnInstallTask;
+use Sweetchuck\Robo\Yarn\Task\YarnInstallTask;
 use Codeception\Test\Unit;
 
 class YarnInstallTaskTest extends Unit
 {
     /**
-     * @var \Cheppers\Robo\Yarn\Test\UnitTester
+     * @var \Sweetchuck\Robo\Yarn\Test\UnitTester
      */
     protected $tester;
 

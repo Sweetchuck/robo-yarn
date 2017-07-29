@@ -1,11 +1,11 @@
 <?php
 
-namespace Cheppers\Robo\Yarn\Task;
+namespace Sweetchuck\Robo\Yarn\Task;
 
-use Cheppers\AssetJar\AssetJarAware;
-use Cheppers\AssetJar\AssetJarAwareInterface;
-use Cheppers\Robo\Yarn\Option\BaseOptions;
-use Cheppers\Robo\Yarn\Utils;
+use Sweetchuck\AssetJar\AssetJarAware;
+use Sweetchuck\AssetJar\AssetJarAwareInterface;
+use Sweetchuck\Robo\Yarn\Option\BaseOptions;
+use Sweetchuck\Robo\Yarn\Utils;
 use Robo\Common\OutputAwareTrait;
 use Robo\Contract\CommandInterface;
 use Robo\Contract\OutputAwareInterface;

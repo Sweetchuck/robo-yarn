@@ -1,6 +1,6 @@
 <?php
 
-namespace Cheppers\Robo\Yarn\Task;
+namespace Sweetchuck\Robo\Yarn\Task;
 
 class YarnInstallTask extends CommonTask
 {

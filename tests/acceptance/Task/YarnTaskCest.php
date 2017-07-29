@@ -1,9 +1,9 @@
 <?php
 
-namespace Cheppers\Robo\Yarn\Tests\Task;
+namespace Sweetchuck\Robo\Yarn\Tests\Task;
 
-use Cheppers\Robo\Yarn\Test\AcceptanceTester;
-use Cheppers\Robo\Yarn\Test\Helper\RoboFiles\YarnRoboFile;
+use Sweetchuck\Robo\Yarn\Test\AcceptanceTester;
+use Sweetchuck\Robo\Yarn\Test\Helper\RoboFiles\YarnRoboFile;
 use Symfony\Component\Filesystem\Filesystem;
 
 class YarnTaskCest

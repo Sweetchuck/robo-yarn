@@ -1,19 +1,19 @@
 <?php
 
-namespace Cheppers\Robo\Yarn\Tests\Task;
+namespace Sweetchuck\Robo\Yarn\Tests\Task;
 
-use Cheppers\AssetJar\AssetJar;
-use Cheppers\Robo\Yarn\Task\YarnVersionTask;
+use Sweetchuck\AssetJar\AssetJar;
+use Sweetchuck\Robo\Yarn\Task\YarnVersionTask;
 use Codeception\Test\Unit;
 use Codeception\Util\Stub;
 use Robo\Robo;
-use Cheppers\Robo\Yarn\Test\Helper\Dummy\Output as DummyOutput;
-use Cheppers\Robo\Yarn\Test\Helper\Dummy\Process as DummyProcess;
+use Sweetchuck\Robo\Yarn\Test\Helper\Dummy\Output as DummyOutput;
+use Sweetchuck\Robo\Yarn\Test\Helper\Dummy\Process as DummyProcess;
 
 class YarnVersionTaskTest extends Unit
 {
     /**
-     * @var \Cheppers\Robo\Yarn\Test\UnitTester
+     * @var \Sweetchuck\Robo\Yarn\Test\UnitTester
      */
     protected $tester;
 
@@ -59,7 +59,7 @@ class YarnVersionTaskTest extends Unit
             'assetJarMapping' => ['version' => ['yarnVersion', 'version']],
         ];
 
-        /** @var \Cheppers\Robo\Yarn\Task\YarnVersionTask $task */
+        /** @var \Sweetchuck\Robo\Yarn\Task\YarnVersionTask $task */
         $task = Stub::construct(
             YarnVersionTask::class,
             [$options, []],

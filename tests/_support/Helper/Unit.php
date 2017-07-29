@@ -1,6 +1,6 @@
 <?php
 
-namespace Cheppers\Robo\Yarn\Test\Helper;
+namespace Sweetchuck\Robo\Yarn\Test\Helper;
 
 class Unit extends \Codeception\Module
 {

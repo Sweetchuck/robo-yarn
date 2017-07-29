@@ -1,8 +1,8 @@
 <?php
 
-namespace Cheppers\Robo\Yarn\Test\Helper\RoboFiles;
+namespace Sweetchuck\Robo\Yarn\Test\Helper\RoboFiles;
 
-use Cheppers\Robo\Yarn\YarnTaskLoader;
+use Sweetchuck\Robo\Yarn\YarnTaskLoader;
 use Robo\Contract\TaskInterface;
 use Robo\Tasks;
 
