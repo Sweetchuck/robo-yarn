@@ -2,12 +2,11 @@
 
 namespace Sweetchuck\Robo\Yarn\Tests\Task;
 
-use Sweetchuck\AssetJar\AssetJar;
 use Sweetchuck\Robo\Yarn\Task\YarnVersionTask;
 use Codeception\Test\Unit;
 use Codeception\Util\Stub;
 use Robo\Robo;
-use Sweetchuck\Robo\Yarn\Test\Helper\Dummy\Output as DummyOutput;
+use Sweetchuck\Codeception\Module\RoboTaskRunner\DummyOutput;
 use Sweetchuck\Robo\Yarn\Test\Helper\Dummy\Process as DummyProcess;
 
 class YarnVersionTaskTest extends Unit
@@ -53,10 +52,8 @@ class YarnVersionTaskTest extends Unit
 
         $mainStdOutput = new DummyOutput([]);
 
-        $assetJar = new AssetJar();
         $options = [
-            'assetJar' => $assetJar,
-            'assetJarMapping' => ['version' => ['yarnVersion', 'version']],
+            'assetNamePrefix' => 'abc.',
         ];
 
         /** @var \Sweetchuck\Robo\Yarn\Task\YarnVersionTask $task */
@@ -90,16 +87,17 @@ class YarnVersionTaskTest extends Unit
             Robo::unsetContainer();
         }
 
+        $assetNamePrefix = $options['assetNamePrefix'] ?? '';
+
         $this->tester->assertEquals(
             $expectedExitCode,
             $result->getExitCode(),
             'Exit code is different than the expected.'
         );
 
-        $actualVersion = $task->getAssetJarValue('version');
         $this->tester->assertEquals(
             $expectedVersion,
-            $actualVersion,
+            $result["{$assetNamePrefix}version"],
             'Version number equals'
         );
     }

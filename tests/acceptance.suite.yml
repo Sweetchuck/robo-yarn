@@ -1,7 +1,7 @@
 
-class_name: AcceptanceTester
+class_name: 'AcceptanceTester'
 modules:
     enabled:
-        - Asserts
-        - \Sweetchuck\Robo\Yarn\Test\Helper\Acceptance
-        - \Sweetchuck\Robo\Yarn\Test\Helper\Module\RoboTaskRunner
+        - 'Asserts'
+        - '\Sweetchuck\Robo\Yarn\Test\Helper\Acceptance'
+        - '\Sweetchuck\Codeception\Module\RoboTaskRunner\RoboTaskRunner'
