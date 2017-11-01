@@ -1,6 +1,6 @@
 <?php
 
-// @codingStandardsIgnoreStart
+use Robo\Tasks;
 use Sweetchuck\LintReport\Reporter\BaseReporter;
 use Sweetchuck\LintReport\Reporter\CheckstyleReporter;
 use League\Container\ContainerInterface;
@@ -12,8 +12,7 @@ use Symfony\Component\Process\Process;
 use Symfony\Component\Yaml\Yaml;
 use Webmozart\PathUtil\Path;
 
-class RoboFile extends \Robo\Tasks
-    // @codingStandardsIgnoreEnd
+class RoboFile extends Tasks
 {
     use \Sweetchuck\Robo\Git\GitTaskLoader;
     use \Sweetchuck\Robo\Phpcs\PhpcsTaskLoader;
@@ -342,7 +341,6 @@ class RoboFile extends \Robo\Tasks
 
         $options = [
             'failOn' => 'warning',
-            'standards' => ['PSR2'],
             'lintReporters' => [
                 'lintVerboseReporter' => null,
             ],
