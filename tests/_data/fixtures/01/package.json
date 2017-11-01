@@ -1,0 +1,8 @@
+{
+    "name": "robo-yarn-tester-01",
+    "description": "Test helper.",
+    "private": true,
+    "dependencies": {
+        "find-versions": "1.0.0"
+    }
+}

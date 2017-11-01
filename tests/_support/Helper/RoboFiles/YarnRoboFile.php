@@ -12,15 +12,15 @@ class YarnRoboFile extends Tasks
 
     public function installSuccess(string $dir): TaskInterface
     {
-        return $this->taskYarnInstall([
-            'workingDirectory' => $dir,
-        ]);
+        return $this
+          ->taskYarnInstall()
+          ->setWorkingDirectory($dir);
     }
 
     public function versionSuccess(string $dir): TaskInterface
     {
-        return $this->taskYarnVersion([
-            'workingDirectory' => $dir,
-        ]);
+        return $this
+          ->taskYarnVersion()
+          ->setWorkingDirectory($dir);
     }
 }
