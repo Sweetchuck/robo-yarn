@@ -10,17 +10,22 @@ class YarnRoboFile extends Tasks
 {
     use YarnTaskLoader;
 
-    public function installSuccess(string $dir): TaskInterface
-    {
+    public function install(
+        string $dir,
+        array $options = [
+            'skipIfPackageJsonNotExists' => false,
+        ]
+    ): TaskInterface {
         return $this
-          ->taskYarnInstall()
-          ->setWorkingDirectory($dir);
+            ->taskYarnInstall()
+            ->setWorkingDirectory($dir)
+            ->setSkipIfPackageJsonNotExists($options['skipIfPackageJsonNotExists']);
     }
 
     public function versionSuccess(string $dir): TaskInterface
     {
         return $this
-          ->taskYarnVersion()
-          ->setWorkingDirectory($dir);
+            ->taskYarnVersion()
+            ->setWorkingDirectory($dir);
     }
 }
