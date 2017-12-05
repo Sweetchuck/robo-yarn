@@ -28,12 +28,18 @@ class YarnTaskCest
         $this->fs->remove($this->tmpDirs);
     }
 
-    public function runInstallSuccess(AcceptanceTester $I): void
+    public function runInstallWithPackageJsonRequired(AcceptanceTester $I): void
     {
         $tmpDir = $this->createTmpDir('01');
 
-        $id = 'install';
-        $I->runRoboTask($id, YarnRoboFile::class, 'install:success', $tmpDir);
+        $id = __FUNCTION__;
+        $I->wantTo('Run "yarn install" with "package.json"; required');
+        $I->runRoboTask(
+            $id,
+            YarnRoboFile::class,
+            'install',
+            $tmpDir
+        );
 
         $expectedStdOutput = '';
         $expectedStdError = sprintf(
@@ -43,6 +49,81 @@ class YarnTaskCest
         $I->assertEquals(0, $I->getRoboTaskExitCode($id));
         $I->assertEquals($expectedStdOutput, $I->getRoboTaskStdOutput($id));
         $I->assertEquals($expectedStdError, $I->getRoboTaskStdError($id));
+        $I->assertFileExists("$tmpDir/node_modules");
+    }
+
+    public function runInstallWithPackageJsonOptional(AcceptanceTester $I): void
+    {
+        $tmpDir = $this->createTmpDir('01');
+
+        $id = __FUNCTION__;
+        $I->wantTo('Run "yarn install" with "package.json"; optional');
+        $I->runRoboTask(
+            $id,
+            YarnRoboFile::class,
+            'install',
+            $tmpDir,
+            '--skipIfPackageJsonNotExists'
+        );
+
+        $expectedStdOutput = '';
+        $expectedStdError = sprintf(
+            " [YarnInstall] cd %s && yarn install\n",
+            escapeshellarg($tmpDir)
+        );
+        $I->assertEquals(0, $I->getRoboTaskExitCode($id));
+        $I->assertEquals($expectedStdOutput, $I->getRoboTaskStdOutput($id));
+        $I->assertEquals($expectedStdError, $I->getRoboTaskStdError($id));
+        $I->assertFileExists("$tmpDir/node_modules");
+    }
+
+    public function runInstallWithoutPackageJsonRequired(AcceptanceTester $I): void
+    {
+        $tmpDir = $this->createTmpDir('');
+
+        $id = __FUNCTION__;
+        $I->wantTo('Run "yarn install" without "package.json"; required');
+        $I->runRoboTask(
+            $id,
+            YarnRoboFile::class,
+            'install',
+            $tmpDir
+        );
+
+        $expectedStdOutput = '';
+        $expectedStdError = sprintf(
+            " [YarnInstall] cd %s && yarn install\n",
+            escapeshellarg($tmpDir)
+        );
+        $I->assertEquals(0, $I->getRoboTaskExitCode($id));
+        $I->assertEquals($expectedStdOutput, $I->getRoboTaskStdOutput($id));
+        $I->assertEquals($expectedStdError, $I->getRoboTaskStdError($id));
+        $I->assertFileNotExists("$tmpDir/node_modules");
+    }
+
+    public function runInstallWithoutPackageJsonOptional(AcceptanceTester $I): void
+    {
+        $tmpDir = $this->createTmpDir('');
+
+        $id = __FUNCTION__;
+        $I->wantTo('Run "yarn install" without "package.json"; optional');
+        $I->runRoboTask(
+            $id,
+            YarnRoboFile::class,
+            'install',
+            $tmpDir,
+            '--skipIfPackageJsonNotExists'
+        );
+
+        $expectedStdOutput = '';
+        $expectedStdError = sprintf(
+            " [YarnInstall] Skip \"yarn install\" in \"%s\"\n",
+            $tmpDir
+        );
+        $I->assertEquals(0, $I->getRoboTaskExitCode($id));
+        $I->assertEquals($expectedStdOutput, $I->getRoboTaskStdOutput($id));
+        $I->assertEquals($expectedStdError, $I->getRoboTaskStdError($id));
+        $I->assertFileNotExists("$tmpDir/node_modules");
     }
 
     public function runVersionSuccess(AcceptanceTester $I): void
@@ -63,8 +144,9 @@ class YarnTaskCest
     protected function createTmpDir(string $fixture): string
     {
         $dirName = tempnam(sys_get_temp_dir(), 'robo-yarn.test.');
-        if (unlink($dirName)) {
-            mkdir($dirName, 0777 - umask(), true);
+        $this->fs->remove($dirName);
+        $this->fs->mkdir($dirName, 0777 - umask());
+        if ($fixture) {
             $this->fs->mirror(
                 codecept_data_dir("fixtures/$fixture"),
                 $dirName

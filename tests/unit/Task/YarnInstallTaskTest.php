@@ -198,4 +198,12 @@ class YarnInstallTaskTest extends Unit
         $task = new YarnInstallTask($options);
         $this->tester->assertEquals($expected, $task->getCommand());
     }
+
+    public function testGetSetSkipIfPackageJsonNotExists(): void
+    {
+        $task = new YarnInstallTask();
+        $this->assertEquals(false, $task->getSkipIfPackageJsonNotExists());
+        $task->setOptions(['skipIfPackageJsonNotExists' => true]);
+        $this->assertEquals(true, $task->getSkipIfPackageJsonNotExists());
+    }
 }

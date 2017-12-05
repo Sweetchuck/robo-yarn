@@ -16,9 +16,14 @@ class CommonTask extends BaseTask
         return $this->getOptionsCommon() + parent::getOptions();
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function setOptions(array $options)
     {
         parent::setOptions($options);
         $this->setOptionsCommon($options);
+
+        return $this;
     }
 }
