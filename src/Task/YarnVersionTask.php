@@ -2,7 +2,7 @@
 
 namespace Sweetchuck\Robo\Yarn\Task;
 
-class YarnVersionTask extends BaseTask
+class YarnVersionTask extends BaseCliTask
 {
     /**
      * {@inheritdoc}

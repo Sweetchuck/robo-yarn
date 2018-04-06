@@ -11,7 +11,11 @@ trait YarnTaskLoader
      */
     protected function taskYarnInstall(array $options = []): CollectionBuilder
     {
-        return $this->task(Task\YarnInstallTask::class, $options);
+        /** @var \Sweetchuck\Robo\Yarn\Task\YarnInstallTask $task */
+        $task = $this->task(Task\YarnInstallTask::class);
+        $task->setOptions($options);
+
+        return $task;
     }
 
     /**
@@ -19,6 +23,10 @@ trait YarnTaskLoader
      */
     protected function taskYarnVersion(array $options = []): CollectionBuilder
     {
-        return $this->task(Task\YarnVersionTask::class, $options);
+        /** @var \Sweetchuck\Robo\Yarn\Task\YarnVersionTask $task */
+        $task = $this->task(Task\YarnVersionTask::class);
+        $task->setOptions($options);
+
+        return $task;
     }
 }

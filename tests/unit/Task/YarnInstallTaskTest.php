@@ -195,7 +195,8 @@ class YarnInstallTaskTest extends Unit
      */
     public function testGetCommand(string $expected, array $options): void
     {
-        $task = new YarnInstallTask($options);
+        $task = new YarnInstallTask();
+        $task->setOptions($options);
         $this->tester->assertEquals($expected, $task->getCommand());
     }
 

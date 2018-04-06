@@ -37,7 +37,8 @@ class YarnVersionTaskTest extends Unit
      */
     public function testGetCommand(string $expected, array $options): void
     {
-        $task = new YarnVersionTask($options);
+        $task = new YarnVersionTask();
+        $task->setOptions($options);
         $this->tester->assertEquals($expected, $task->getCommand());
     }
 
@@ -59,11 +60,12 @@ class YarnVersionTaskTest extends Unit
         /** @var \Sweetchuck\Robo\Yarn\Task\YarnVersionTask $task */
         $task = Stub::construct(
             YarnVersionTask::class,
-            [$options, []],
+            [],
             [
                 'processClass' => DummyProcess::class,
             ]
         );
+        $task->setOptions($options);
 
         $processIndex = count(DummyProcess::$instances);
 

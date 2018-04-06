@@ -2,7 +2,7 @@
 
 namespace Sweetchuck\Robo\Yarn\Task;
 
-class YarnInstallTask extends CommonTask
+class YarnInstallTask extends CommonCliTask
 {
     /**
      * {@inheritdoc}

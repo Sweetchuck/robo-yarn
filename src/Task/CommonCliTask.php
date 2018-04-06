@@ -4,7 +4,7 @@ namespace Sweetchuck\Robo\Yarn\Task;
 
 use Sweetchuck\Robo\Yarn\Option\CommonOptions;
 
-class CommonTask extends BaseTask
+class CommonCliTask extends BaseCliTask
 {
     use CommonOptions;
 
