@@ -31,7 +31,7 @@ class NodeVersionTaskTest extends Unit
                     'yarn.lock' => '',
                 ],
             ],
-            'yarn.lock; exists' => [
+            'yarn.lock; valid' => [
                 [
                     'assets' => [
                         'full' => '8.11.1',
@@ -46,7 +46,7 @@ class NodeVersionTaskTest extends Unit
                     ]),
                 ],
             ],
-            'yarn.lock; exists; asset name prefix' => [
+            'yarn.lock; valid; assetNamePrefix' => [
                 [
                     'assets' => [
                         'package01.full' => '8.11.1-rc1+foo',
@@ -81,7 +81,7 @@ class NodeVersionTaskTest extends Unit
                     ]),
                 ],
             ],
-            'package-lock.json; exists' => [
+            'package-lock.json; valid' => [
                 [
                     'assets' => [
                         'full' => '1.2.3',
@@ -97,7 +97,7 @@ class NodeVersionTaskTest extends Unit
                     ]),
                 ],
             ],
-            'priority' => [
+            'priority - yarn.lock' => [
                 [
                     'assets' => [
                         'full' => '8.11.1',
@@ -117,6 +117,62 @@ class NodeVersionTaskTest extends Unit
                             ],
                         ],
                     ]),
+                    '.nvmrc' => implode(PHP_EOL, [
+                        '4.5.6',
+                        '',
+                    ]),
+                ],
+            ],
+            'priority - package-lock.json' => [
+                [
+                    'assets' => [
+                        'full' => '1.2.3',
+                    ],
+                ],
+                [
+                    'yarn.lock' => '',
+                    'package-lock.json' => json_encode([
+                        'dependencies' => [
+                            'node' => [
+                                'version' => '1.2.3',
+                            ],
+                        ],
+                    ]),
+                    '.nvmrc' => implode(PHP_EOL, [
+                        '4.5.6',
+                        '',
+                    ]),
+                ],
+            ],
+            'priority - nvm' => [
+                [
+                    'assets' => [
+                        'full' => '4.5.6',
+                    ],
+                ],
+                [
+                    'yarn.lock' => '',
+                    'package-lock.json' => json_encode([
+                        'dependencies' => [],
+                    ]),
+                    '.nvmrc' => implode(PHP_EOL, [
+                        '4.5.6',
+                        '',
+                    ]),
+                ],
+            ],
+            'priority - all of them is empty' => [
+                [
+                    'assets' => [
+                        'full' => null,
+                    ],
+                ],
+                [
+                    'yarn.lock' => '',
+                    'package-lock.json' => json_encode([
+                        'dependencies' => [],
+                    ]),
+                    '.nvmrc' => PHP_EOL,
                 ],
             ],
         ];
@@ -127,7 +183,12 @@ class NodeVersionTaskTest extends Unit
      */
     public function testRunSuccess(array $expected, array $fsStructure, array $options = []): void
     {
-        $rootDirName = str_replace('\\', '_', static::class) . '.' . $this->getName();
+        $rootDirName = implode('.', [
+            str_replace('\\', '_', static::class),
+            $this->getName(false),
+            $this->dataName(),
+        ]);
+
         $rootDir = vfsStream::setup($rootDirName, null, $fsStructure);
 
         $expected += [
