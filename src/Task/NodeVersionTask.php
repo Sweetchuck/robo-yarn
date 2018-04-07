@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Sweetchuck\Robo\Yarn\Task;
 
+use Icecave\SemVer\Version as SemVerVersion;
 use Mindscreen\YarnLock\YarnLock;
 
 class NodeVersionTask extends BaseTask
@@ -22,7 +23,7 @@ class NodeVersionTask extends BaseTask
         }
 
         $packageLockFilePath = "$wd/package-lock.json";
-        if (!isset($this->assets['node.version']) && file_exists($packageLockFilePath)) {
+        if (!isset($this->assets['full']) && file_exists($packageLockFilePath)) {
             $this->runActionPackageLock($packageLockFilePath);
         }
 
@@ -34,7 +35,7 @@ class NodeVersionTask extends BaseTask
      */
     protected function runActionYarnLock(string $filePath)
     {
-        $this->assets['node.version'] = null;
+        $this->assets['full'] = null;
 
         try {
             $yarnLock = YarnLock::fromString(file_get_contents($filePath));
@@ -43,7 +44,7 @@ class NodeVersionTask extends BaseTask
         }
 
         if ($yarnLock->hasPackage('node')) {
-            $this->assets['node.version'] = $yarnLock->getPackage('node')->getVersion();
+            $this->assets['full'] = $yarnLock->getPackage('node')->getVersion();
         }
 
         return $this;
@@ -64,7 +65,28 @@ class NodeVersionTask extends BaseTask
             throw new \Exception('@todo', 2);
         }
 
-        $this->assets['node.version'] = $lock['dependencies']['node']['version'] ?? null;
+        $this->assets['full'] = $lock['dependencies']['node']['version'] ?? null;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function runProcessOutputs()
+    {
+        parent::runProcessOutputs();
+        if (empty($this->assets['full'])) {
+            return $this;
+        }
+
+        $version = SemVerVersion::parse($this->assets['full']);
+        $this->assets['semVerVersion'] = $version;
+        $this->assets['major'] = $version->major();
+        $this->assets['minor'] = $version->minor();
+        $this->assets['patch'] = $version->patch();
+        $this->assets['preReleaseVersion'] = $version->preReleaseVersion();
+        $this->assets['buildMetaData'] = $version->buildMetaData();
 
         return $this;
     }

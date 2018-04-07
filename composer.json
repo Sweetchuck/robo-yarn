@@ -12,6 +12,7 @@
     "require": {
         "php": ">=7.1",
         "consolidation/robo": "^1.0",
+        "icecave/semver": "^3.0",
         "mindscreen/yarnlock": "^1.0",
         "symfony/process": "^3.2 || ^4.0"
     },

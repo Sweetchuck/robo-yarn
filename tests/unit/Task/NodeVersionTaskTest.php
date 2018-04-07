@@ -24,7 +24,7 @@ class NodeVersionTaskTest extends Unit
             'yarn.lock; null' => [
                 [
                     'assets' => [
-                        'node.version' => null,
+                        'full' => null,
                     ],
                 ],
                 [
@@ -34,7 +34,7 @@ class NodeVersionTaskTest extends Unit
             'yarn.lock; exists' => [
                 [
                     'assets' => [
-                        'node.version' => '8.11.1',
+                        'full' => '8.11.1',
                     ],
                 ],
                 [
@@ -49,13 +49,18 @@ class NodeVersionTaskTest extends Unit
             'yarn.lock; exists; asset name prefix' => [
                 [
                     'assets' => [
-                        'package01.node.version' => '8.11.1',
+                        'package01.full' => '8.11.1-rc1+foo',
+                        'package01.major' => 8,
+                        'package01.minor' => 11,
+                        'package01.patch' => 1,
+                        'package01.preReleaseVersion' => 'rc1',
+                        'package01.buildMetaData' => 'foo',
                     ],
                 ],
                 [
                     'yarn.lock' => implode(PHP_EOL, [
                         'node@^8.0:',
-                        '  version "8.11.1"',
+                        '  version "8.11.1-rc1+foo"',
                         "  resolved $resolved",
                         '',
                     ]),
@@ -67,7 +72,7 @@ class NodeVersionTaskTest extends Unit
             'package-lock.json; null' => [
                 [
                     'assets' => [
-                        'node.version' => null,
+                        'full' => null,
                     ],
                 ],
                 [
@@ -79,7 +84,7 @@ class NodeVersionTaskTest extends Unit
             'package-lock.json; exists' => [
                 [
                     'assets' => [
-                        'node.version' => '1.2.3',
+                        'full' => '1.2.3',
                     ],
                 ],
                 [
@@ -95,7 +100,7 @@ class NodeVersionTaskTest extends Unit
             'priority' => [
                 [
                     'assets' => [
-                        'node.version' => '8.11.1',
+                        'full' => '8.11.1',
                     ],
                 ],
                 [
@@ -143,12 +148,12 @@ class NodeVersionTaskTest extends Unit
         $result = $task->run();
 
         if (array_key_exists('exitCode', $expected)) {
-            $this->assertEquals($expected['exitCode'], $result->getExitCode());
+            $this->assertSame($expected['exitCode'], $result->getExitCode());
         }
 
         if (array_key_exists('assets', $expected)) {
             foreach ($expected['assets'] as $assetName => $assetValue) {
-                $this->assertEquals($assetValue, $result[$assetName]);
+                $this->assertSame($assetValue, $result[$assetName]);
             }
         }
     }
