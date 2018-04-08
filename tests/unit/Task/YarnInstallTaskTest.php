@@ -25,6 +25,13 @@ class YarnInstallTaskTest extends Unit
                     'workingDirectory' => 'my-dir',
                 ]
             ],
+            'nodeExecutable' => [
+                'my-node my-yarn install',
+                [
+                    'nodeExecutable' => 'my-node',
+                    'yarnExecutable' => 'my-yarn',
+                ]
+            ],
             'yarnExecutable' => [
                 'my-yarn install',
                 [
@@ -195,7 +202,8 @@ class YarnInstallTaskTest extends Unit
      */
     public function testGetCommand(string $expected, array $options): void
     {
-        $task = new YarnInstallTask($options);
+        $task = new YarnInstallTask();
+        $task->setOptions($options);
         $this->tester->assertEquals($expected, $task->getCommand());
     }
 

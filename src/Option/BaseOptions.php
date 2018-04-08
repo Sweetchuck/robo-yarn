@@ -71,6 +71,28 @@ trait BaseOptions
     }
     // endregion
 
+    // region Option - nodeExecutable.
+    /**
+     * @var string
+     */
+    protected $nodeExecutable = '';
+
+    public function getNodeExecutable(): string
+    {
+        return $this->nodeExecutable;
+    }
+
+    /**
+     * @return $this
+     */
+    public function setNodeExecutable(string $value)
+    {
+        $this->nodeExecutable = $value;
+
+        return $this;
+    }
+    // endregion
+
     protected function getOptionsBase(): array
     {
         return [
@@ -78,9 +100,13 @@ trait BaseOptions
                 'type' => 'other',
                 'value' => $this->getWorkingDirectory(),
             ],
+            'nodeExecutable' => [
+                'type' => 'other',
+                'value' => $this->getNodeExecutable(),
+            ],
             'yarnExecutable' => [
                 'type' => 'other',
-                'value' => $this->getYarnExecutable(),
+                'value' => $this->getYarnExecutable() ?: 'yarn',
             ],
         ];
     }
@@ -98,6 +124,10 @@ trait BaseOptions
 
                 case 'workingDirectory':
                     $this->setWorkingDirectory($value);
+                    break;
+
+                case 'nodeExecutable':
+                    $this->setNodeExecutable($value);
                     break;
 
                 case 'yarnExecutable':

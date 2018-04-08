@@ -2,12 +2,12 @@
 
 namespace Sweetchuck\Robo\Yarn\Task;
 
-class YarnVersionTask extends BaseTask
+class YarnVersionTask extends BaseCliTask
 {
     /**
      * {@inheritdoc}
      */
-    protected $taskName = 'YarnVersion';
+    protected $taskName = 'Yarn - Version';
 
     /**
      * {@inheritdoc}

@@ -1,7 +1,7 @@
 {
     "name": "sweetchuck/robo-yarn",
     "description": "Template to create a new Robo task.",
-    "license": "GPL-2.0",
+    "license": "GPL-2.0-or-later",
     "config": {
         "bin-dir": "bin",
         "sort-packages": true,
@@ -11,16 +11,20 @@
     "prefer-stable": true,
     "require": {
         "php": ">=7.1",
-        "consolidation/robo": "^1.0"
+        "consolidation/robo": "^1.0",
+        "icecave/semver": "^3.0",
+        "mindscreen/yarnlock": "^1.0",
+        "symfony/process": "^3.2 || ^4.0"
     },
     "require-dev": {
         "codeception/codeception": "^2.2",
         "danielstjules/stringy": "^3.1",
+        "mikey179/vfsStream": "^1.6",
         "sweetchuck/codeception-module-robo-task-runner": "^0.0",
         "sweetchuck/git-hooks": "^0.0",
         "sweetchuck/robo-git": "^0.0",
         "sweetchuck/robo-phpcs": "^0.0",
-        "symfony/finder": "^3.2",
+        "symfony/finder": "^3.2 || ^4.0",
         "webmozart/path-util": "^2.3"
     },
     "autoload": {
