@@ -43,7 +43,7 @@ class YarnTaskCest
 
         $expectedStdOutput = '';
         $expectedStdError = sprintf(
-            " [YarnInstall] cd %s && yarn install\n",
+            " [Yarn - Install] cd %s && yarn install\n",
             escapeshellarg($tmpDir)
         );
         $I->assertEquals(0, $I->getRoboTaskExitCode($id));
@@ -68,7 +68,7 @@ class YarnTaskCest
 
         $expectedStdOutput = '';
         $expectedStdError = sprintf(
-            " [YarnInstall] cd %s && yarn install\n",
+            " [Yarn - Install] cd %s && yarn install\n",
             escapeshellarg($tmpDir)
         );
         $I->assertEquals(0, $I->getRoboTaskExitCode($id));
@@ -92,7 +92,7 @@ class YarnTaskCest
 
         $expectedStdOutput = '';
         $expectedStdError = sprintf(
-            " [YarnInstall] cd %s && yarn install\n",
+            " [Yarn - Install] cd %s && yarn install\n",
             escapeshellarg($tmpDir)
         );
         $I->assertEquals(0, $I->getRoboTaskExitCode($id));
@@ -117,7 +117,7 @@ class YarnTaskCest
 
         $expectedStdOutput = '';
         $expectedStdError = sprintf(
-            " [YarnInstall] Skip \"yarn install\" in \"%s\"\n",
+            " [Yarn - Install] Skip \"yarn install\" in \"%s\"\n",
             $tmpDir
         );
         $I->assertEquals(0, $I->getRoboTaskExitCode($id));
@@ -134,7 +134,7 @@ class YarnTaskCest
         $I->runRoboTask($id, YarnRoboFile::class, 'version:success', $tmpDir);
 
         $expectedStdError = sprintf(
-            " [YarnVersion] cd %s && yarn --version\n",
+            " [Yarn - Version] cd %s && yarn --version\n",
             escapeshellarg($tmpDir)
         );
         $I->assertEquals(0, $I->getRoboTaskExitCode($id));

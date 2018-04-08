@@ -7,7 +7,7 @@ class YarnVersionTask extends BaseCliTask
     /**
      * {@inheritdoc}
      */
-    protected $taskName = 'YarnVersion';
+    protected $taskName = 'Yarn - Version';
 
     /**
      * {@inheritdoc}

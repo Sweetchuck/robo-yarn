@@ -8,8 +8,17 @@ use Icecave\SemVer\Version as SemVerVersion;
 use Mindscreen\YarnLock\YarnLock;
 use Sweetchuck\Robo\Yarn\Utils;
 
+/**
+ * This task detects that which NodeJS version should be used in a certain directory.
+ */
 class NodeVersionTask extends BaseTask
 {
+
+    /**
+     * {@inheritdoc}
+     */
+    protected $taskName = 'Yarn - Required NodeJS version';
+
     // region Options
     // region rootDirectory
     /**

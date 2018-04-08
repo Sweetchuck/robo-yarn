@@ -33,6 +33,8 @@ abstract class BaseCliTask extends BaseTask implements CommandInterface
      */
     public function getCommand()
     {
+        $options = $this->getOptions();
+
         $envPattern = [];
         $envArgs = [];
 
@@ -41,14 +43,19 @@ abstract class BaseCliTask extends BaseTask implements CommandInterface
 
         $cmdAsIs = [];
 
+        if ($options['nodeExecutable']['value']) {
+            $cmdPattern[] = '%s';
+            $cmdArgs[] = escapeshellcmd($options['nodeExecutable']['value']);
+        }
+
         $cmdPattern[] = '%s';
-        $cmdArgs[] = escapeshellcmd($this->getYarnExecutable());
+        $cmdArgs[] = escapeshellcmd($options['yarnExecutable']['value']);
 
         if ($this->action) {
             $cmdPattern[] = $this->action;
         }
 
-        foreach ($this->getOptions() as $optionName => $option) {
+        foreach ($options as $optionName => $option) {
             switch ($option['type']) {
                 case 'environment':
                     if ($option['value'] !== null) {

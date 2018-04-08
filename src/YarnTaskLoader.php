@@ -7,6 +7,18 @@ use Robo\Collection\CollectionBuilder;
 trait YarnTaskLoader
 {
     /**
+     * @return \Sweetchuck\Robo\Yarn\Task\NodeVersionTask|\Robo\Collection\CollectionBuilder
+     */
+    protected function taskYarnNodeVersion(array $options = []): CollectionBuilder
+    {
+        /** @var \Sweetchuck\Robo\Yarn\Task\NodeVersionTask $task */
+        $task = $this->task(Task\NodeVersionTask::class);
+        $task->setOptions($options);
+
+        return $task;
+    }
+
+    /**
      * @return \Sweetchuck\Robo\Yarn\Task\YarnInstallTask|\Robo\Collection\CollectionBuilder
      */
     protected function taskYarnInstall(array $options = []): CollectionBuilder

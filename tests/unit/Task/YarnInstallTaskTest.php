@@ -25,6 +25,13 @@ class YarnInstallTaskTest extends Unit
                     'workingDirectory' => 'my-dir',
                 ]
             ],
+            'nodeExecutable' => [
+                'my-node my-yarn install',
+                [
+                    'nodeExecutable' => 'my-node',
+                    'yarnExecutable' => 'my-yarn',
+                ]
+            ],
             'yarnExecutable' => [
                 'my-yarn install',
                 [
