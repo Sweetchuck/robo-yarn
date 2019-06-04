@@ -127,7 +127,11 @@ class NodeVersionTask extends BaseTask
      */
     protected function runActionPackageLock(string $filePath)
     {
-        $lock = json_decode(Utils::fileGetContents($filePath), true, 512, JSON_THROW_ON_ERROR);
+        $lock = json_decode(Utils::fileGetContents($filePath), true);
+        if ($lock === null) {
+            throw new Exception(json_last_error_msg(), json_last_error());
+        }
+
         $this->assets['full'] = $lock['dependencies']['node']['version'] ?? null;
 
         return $this;
