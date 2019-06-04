@@ -98,7 +98,7 @@ class YarnTaskCest
         $I->assertEquals(0, $I->getRoboTaskExitCode($id));
         $I->assertEquals($expectedStdOutput, $I->getRoboTaskStdOutput($id));
         $I->assertEquals($expectedStdError, $I->getRoboTaskStdError($id));
-        $I->assertFileNotExists("$tmpDir/node_modules");
+        $I->assertFileExists("$tmpDir/node_modules");
     }
 
     public function runInstallWithoutPackageJsonOptional(AcceptanceTester $I): void

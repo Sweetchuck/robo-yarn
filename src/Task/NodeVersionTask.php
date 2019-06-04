@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace Sweetchuck\Robo\Yarn\Task;
 
 use Icecave\SemVer\Version as SemVerVersion;
+use Exception;
 use Mindscreen\YarnLock\YarnLock;
 use Sweetchuck\Robo\Yarn\Utils;
 
@@ -80,18 +81,22 @@ class NodeVersionTask extends BaseTask
         $rootDir = $options['rootDirectory']['value'];
 
         $filePath = Utils::findFileUpward('yarn.lock', $wd, $rootDir);
-        if ($filePath && file_exists($filePath)) {
+        if ($filePath) {
             $this->runActionYarnLock($filePath);
         }
 
-        $filePath = Utils::findFileUpward('package-lock.json', $wd, $rootDir);
-        if (!isset($this->assets['full']) && $filePath && file_exists($filePath)) {
-            $this->runActionPackageLock($filePath);
+        if (!isset($this->assets['full'])) {
+            $filePath = Utils::findFileUpward('package-lock.json', $wd, $rootDir);
+            if ($filePath) {
+                $this->runActionPackageLock($filePath);
+            }
         }
 
-        $filePath = Utils::findFileUpward('.nvmrc', $wd, $rootDir);
-        if (!isset($this->assets['full']) && $filePath && is_readable($filePath)) {
-            $this->runActionNvmRc($filePath);
+        if (!isset($this->assets['full'])) {
+            $filePath = Utils::findFileUpward('.nvmrc', $wd, $rootDir);
+            if ($filePath) {
+                $this->runActionNvmRc($filePath);
+            }
         }
 
         return $this;
@@ -105,8 +110,8 @@ class NodeVersionTask extends BaseTask
         $this->assets['full'] = null;
 
         try {
-            $yarnLock = YarnLock::fromString(file_get_contents($filePath));
-        } catch (\Exception $e) {
+            $yarnLock = YarnLock::fromString(Utils::fileGetContents($filePath));
+        } catch (Exception $e) {
             return $this;
         }
 
@@ -122,16 +127,7 @@ class NodeVersionTask extends BaseTask
      */
     protected function runActionPackageLock(string $filePath)
     {
-        $fileContent = file_get_contents($filePath);
-        if (!is_string($fileContent)) {
-            throw new \Exception('@todo', 1);
-        }
-
-        $lock = json_decode($fileContent, true);
-        if ($lock === null) {
-            throw new \Exception('@todo', 2);
-        }
-
+        $lock = json_decode(Utils::fileGetContents($filePath), true, 512, JSON_THROW_ON_ERROR);
         $this->assets['full'] = $lock['dependencies']['node']['version'] ?? null;
 
         return $this;
@@ -142,12 +138,7 @@ class NodeVersionTask extends BaseTask
      */
     protected function runActionNvmRc(string $filePath)
     {
-        $fileContent = file_get_contents($filePath);
-        if (!is_string($fileContent)) {
-            throw new \Exception('@todo', 1);
-        }
-
-        $this->assets['full'] = trim($fileContent) ?: null;
+        $this->assets['full'] = trim(Utils::fileGetContents($filePath)) ?: null;
 
         return $this;
     }

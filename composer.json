@@ -11,6 +11,7 @@
     "prefer-stable": true,
     "require": {
         "php": ">=7.1",
+        "ext-json": "*",
         "consolidation/robo": "^1.0",
         "icecave/semver": "^3.0",
         "mindscreen/yarnlock": "^1.0",
@@ -20,7 +21,7 @@
         "codeception/codeception": "^2.2",
         "danielstjules/stringy": "^3.1",
         "mikey179/vfsstream": "^1.6",
-        "sweetchuck/codeception-module-robo-task-runner": "^0.0",
+        "sweetchuck/codeception-module-robo-task-runner": "^0.5",
         "sweetchuck/git-hooks": "^0.0",
         "sweetchuck/robo-git": "^0.0",
         "sweetchuck/robo-phpcs": "^0.0",
