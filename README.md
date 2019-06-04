@@ -3,13 +3,15 @@
 [![CircleCI](https://circleci.com/gh/Sweetchuck/robo-yarn.svg?style=svg)](https://circleci.com/gh/Sweetchuck/robo-yarn)
 [![codecov](https://codecov.io/gh/Sweetchuck/robo-yarn/branch/master/graph/badge.svg)](https://codecov.io/gh/Sweetchuck/robo-yarn)
 
-@todo
-
 
 ## Supported commands
 
 * yarn --version
 * yarn install
+* detect the configured NodeJS version from
+  * yarn.lock
+  * package-lock.json
+  * .nvmrc
 
 
 ## Example
