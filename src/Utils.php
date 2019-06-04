@@ -45,7 +45,8 @@ class Utils
         return (bool) preg_match($pattern, $childDir);
     }
 
-    public static function fileGetContents(string $filePath): string {
+    public static function fileGetContents(string $filePath): string
+    {
         $fileContent = file_get_contents($filePath);
         if ($fileContent === false) {
             throw new RuntimeException("File is not readable: '$filePath'", 1);
