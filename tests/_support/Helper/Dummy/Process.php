@@ -12,7 +12,7 @@ class Process extends \Symfony\Component\Process\Process
     /**
      * @var static[]
      */
-    public static $instances = null;
+    public static $instances = [];
 
     public static function reset(): void
     {
