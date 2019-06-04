@@ -7,7 +7,7 @@ use Codeception\Test\Unit;
 use Codeception\Util\Stub;
 use Robo\Robo;
 use Sweetchuck\Codeception\Module\RoboTaskRunner\DummyOutput;
-use Sweetchuck\Robo\Yarn\Test\Helper\Dummy\Process as DummyProcess;
+use Sweetchuck\Codeception\Module\RoboTaskRunner\DummyProcess;
 
 class YarnVersionTaskTest extends Unit
 {

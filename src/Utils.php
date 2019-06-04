@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Sweetchuck\Robo\Yarn;
 
+use RuntimeException;
 use Webmozart\PathUtil\Path;
 
 class Utils
@@ -42,5 +43,15 @@ class Utils
         $pattern = '@^' . preg_quote($parentDir, '@') . '(/|$)@';
 
         return (bool) preg_match($pattern, $childDir);
+    }
+
+    public static function fileGetContents(string $filePath): string
+    {
+        $fileContent = file_get_contents($filePath);
+        if ($fileContent === false) {
+            throw new RuntimeException("File is not readable: '$filePath'", 1);
+        }
+
+        return $fileContent;
     }
 }
