@@ -1,10 +1,10 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c5a60d39f83d38496fa4216a42e11794",
+    "content-hash": "f3cf66b66d4e8ffb7af7a8b7acaade04",
     "packages": [
         {
             "name": "consolidation/annotated-command",
@@ -485,12 +485,12 @@
             "version": "1.0.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/IcecaveStudios/parity.git",
+                "url": "https://github.com/icecave/parity.git",
                 "reference": "0109fef58b3230d23b20b2ac52ecdf477218d300"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/IcecaveStudios/parity/zipball/0109fef58b3230d23b20b2ac52ecdf477218d300",
+                "url": "https://api.github.com/repos/icecave/parity/zipball/0109fef58b3230d23b20b2ac52ecdf477218d300",
                 "reference": "0109fef58b3230d23b20b2ac52ecdf477218d300",
                 "shasum": ""
             },
@@ -541,12 +541,12 @@
             "version": "1.0.1",
             "source": {
                 "type": "git",
-                "url": "https://github.com/IcecaveStudios/repr.git",
+                "url": "https://github.com/icecave/repr.git",
                 "reference": "8a3d2953adf5f464a06e3e2587aeacc97e2bed07"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/IcecaveStudios/repr/zipball/8a3d2953adf5f464a06e3e2587aeacc97e2bed07",
+                "url": "https://api.github.com/repos/icecave/repr/zipball/8a3d2953adf5f464a06e3e2587aeacc97e2bed07",
                 "reference": "8a3d2953adf5f464a06e3e2587aeacc97e2bed07",
                 "shasum": ""
             },
@@ -592,12 +592,12 @@
             "version": "3.0.3",
             "source": {
                 "type": "git",
-                "url": "https://github.com/IcecaveStudios/semver.git",
+                "url": "https://github.com/icecave/semver.git",
                 "reference": "ca4277fb4000019e0cb50e72b272904d9e3d4557"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/IcecaveStudios/semver/zipball/ca4277fb4000019e0cb50e72b272904d9e3d4557",
+                "url": "https://api.github.com/repos/icecave/semver/zipball/ca4277fb4000019e0cb50e72b272904d9e3d4557",
                 "reference": "ca4277fb4000019e0cb50e72b272904d9e3d4557",
                 "shasum": ""
             },
@@ -639,6 +639,7 @@
                 "semver",
                 "version"
             ],
+            "abandoned": "composer/semver",
             "time": "2015-03-09T04:51:38+00:00"
         },
         {
@@ -1809,16 +1810,16 @@
         },
         {
             "name": "mikey179/vfsStream",
-            "version": "v1.6.5",
+            "version": "v1.6.6",
             "source": {
                 "type": "git",
-                "url": "https://github.com/mikey179/vfsStream.git",
-                "reference": "d5fec95f541d4d71c4823bb5e30cf9b9e5b96145"
+                "url": "https://github.com/bovigo/vfsStream.git",
+                "reference": "095238a0711c974ae5b4ebf4c4534a23f3f6c99d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mikey179/vfsStream/zipball/d5fec95f541d4d71c4823bb5e30cf9b9e5b96145",
-                "reference": "d5fec95f541d4d71c4823bb5e30cf9b9e5b96145",
+                "url": "https://api.github.com/repos/bovigo/vfsStream/zipball/095238a0711c974ae5b4ebf4c4534a23f3f6c99d",
+                "reference": "095238a0711c974ae5b4ebf4c4534a23f3f6c99d",
                 "shasum": ""
             },
             "require": {
@@ -1851,7 +1852,7 @@
             ],
             "description": "Virtual file system to mock the real file system in unit tests.",
             "homepage": "http://vfs.bovigo.org/",
-            "time": "2017-08-01T08:02:14+00:00"
+            "time": "2019-04-08T13:54:32+00:00"
         },
         {
             "name": "myclabs/deep-copy",
