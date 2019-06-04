@@ -7,10 +7,14 @@ orbs:
 jobs:
     lint_and_test:
         docker:
-            - image: 'misterio92/ci-php-node:latest'
+            - image: 'misterio92/ci-php-node:1.0'
         working_directory: '~/repo'
         steps:
             - 'checkout'
+            -
+                run:
+                    name: 'Install required PHP extensions'
+                    command: 'apt-get install -y php7.1-xdebug'
             -
                 run:
                     command: 'npm install -g yarn@1.15.2'
