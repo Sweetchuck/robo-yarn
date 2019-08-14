@@ -6,6 +6,9 @@ orbs:
 
 jobs:
     lint_and_test:
+        environment:
+            COMPOSER_NO_INTERACTION: '1'
+            COMPOSER_MEMORY_LIMIT: '-1'
         docker:
             - image: 'misterio92/ci-php-node:1.0'
         working_directory: '~/repo'
@@ -14,7 +17,9 @@ jobs:
             -
                 run:
                     name: 'Install required PHP extensions'
-                    command: 'apt-get install -y php7.1-xdebug'
+                    command: |
+                        apt-get update
+                        apt-get install -y php7.1-xdebug
             -
                 run:
                     command: 'npm install -g yarn@1.15.2'
@@ -27,7 +32,7 @@ jobs:
             -
                 run:
                     name: 'Build'
-                    command: 'composer install --no-interaction'
+                    command: 'composer install --no-progress'
             -
                 save_cache:
                     name: 'Cache save - "./vendor"'

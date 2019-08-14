@@ -39,13 +39,17 @@ class YarnVersionTaskTest extends Unit
     {
         $task = new YarnVersionTask();
         $task->setOptions($options);
-        $this->tester->assertEquals($expected, $task->getCommand());
+        $this->tester->assertSame($expected, $task->getCommand());
     }
 
     public function testRunSuccess(): void
     {
-        $expectedExitCode = 0;
-        $expectedVersion = '0.42.21';
+        $expected['exitCode'] = 0;
+        $expected['version'] = '0.42.21';
+        $expected['processTimeout'] = (float) 42;
+        $expected['envVars'] = [
+            'MY_FOO' => 'bar',
+        ];
 
         $backupContainer = Robo::hasContainer() ? Robo::getContainer() : null;
         $container = Robo::createDefaultContainer();
@@ -55,6 +59,8 @@ class YarnVersionTaskTest extends Unit
 
         $options = [
             'assetNamePrefix' => 'abc.',
+            'processTimeout' => $expected['processTimeout'] ?? null,
+            'envVars' => $expected['envVars'] ?? [],
         ];
 
         /** @var \Sweetchuck\Robo\Yarn\Task\YarnVersionTask $task */
@@ -67,12 +73,15 @@ class YarnVersionTaskTest extends Unit
         );
         $task->setOptions($options);
 
+        $task->setEnvVar('MY_B', 'b');
+        $expected['envVars']['MY_B'] = 'b';
+
         $processIndex = count(DummyProcess::$instances);
 
         DummyProcess::$prophecy[$processIndex] = [
             'exitCode' => 0,
             'stdOutput' => implode("\n", [
-                $expectedVersion,
+                $expected['version'],
                 '',
             ]),
             'stdError' => '',
@@ -91,16 +100,44 @@ class YarnVersionTaskTest extends Unit
 
         $assetNamePrefix = $options['assetNamePrefix'] ?? '';
 
-        $this->tester->assertEquals(
-            $expectedExitCode,
-            $result->getExitCode(),
-            'Exit code is different than the expected.'
+        $this->tester->assertSame(
+            $expected['envVars']['MY_B'],
+            $task->getEnvVar('MY_B'),
+            'getEnvVar'
         );
 
-        $this->tester->assertEquals(
-            $expectedVersion,
-            $result["{$assetNamePrefix}version"],
-            'Version number equals'
-        );
+        if (array_key_exists('exitCode', $options)) {
+            $this->tester->assertSame(
+                $expected['exitCode'],
+                $result->getExitCode(),
+                'Exit code is different than the expected.'
+            );
+        }
+
+        if (array_key_exists('version', $expected)) {
+            $this->tester->assertSame(
+                $expected['version'],
+                $result["{$assetNamePrefix}version"],
+                'Version number equals'
+            );
+        }
+
+        $process = DummyProcess::$instances[$processIndex];
+
+        if (array_key_exists('envVars', $expected)) {
+            $this->tester->assertSame(
+                $expected['envVars'],
+                $process->getEnv(),
+                'Environment variables'
+            );
+        }
+
+        if (array_key_exists('processTimeout', $expected)) {
+            $this->tester->assertSame(
+                $expected['processTimeout'],
+                $process->getTimeout(),
+                'Process timeout'
+            );
+        }
     }
 }
