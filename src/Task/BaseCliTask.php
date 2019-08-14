@@ -28,6 +28,75 @@ abstract class BaseCliTask extends BaseTask implements CommandInterface
      */
     protected $processClass = Process::class;
 
+    // region Option - processTimeout
+    /**
+     * @var null|float
+     */
+    protected $processTimeout = null;
+
+    public function getProcessTimeout(): ?float
+    {
+        return $this->processTimeout;
+    }
+
+    /**
+     * @return $this
+     */
+    public function setProcessTimeout(?float $processTimeout)
+    {
+        $this->processTimeout = $processTimeout;
+
+        return $this;
+    }
+    // endregion
+
+    protected $envVars = [];
+
+    public function getEnvVars(): array
+    {
+        return $this->envVars;
+    }
+
+    public function getEnvVar(string $name): ?string
+    {
+        return $this->envVars[$name] ?? null;
+    }
+
+    /**
+     * @return $this
+     */
+    public function setEnvVars(array $envVars)
+    {
+        $this->envVars = $envVars;
+
+        return $this;
+    }
+
+    /**
+     * @return $this
+     */
+    public function setEnvVar(string $name, $value)
+    {
+        $this->envVars[$name] = (string) $value;
+
+        return $this;
+    }
+
+    public function setOptions(array $options)
+    {
+        parent::setOptions($options);
+
+        if (array_key_exists('processTimeout', $options)) {
+            $this->setProcessTimeout($options['processTimeout']);
+        }
+
+        if (array_key_exists('envVars', $options)) {
+            $this->setEnvVars($options['envVars']);
+        }
+
+        return $this;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -172,8 +241,15 @@ abstract class BaseCliTask extends BaseTask implements CommandInterface
      */
     protected function runAction()
     {
+        $x = 0;
         /** @var \Symfony\Component\Process\Process $process */
-        $process = new $this->processClass($this->command);
+        $process = new $this->processClass(
+            $this->command,
+            null,
+            $this->getEnvVars() ?: null,
+            null,
+            $this->getProcessTimeout()
+        );
 
         $this->actionExitCode = $process->run(function ($type, $data) {
             $this->runCallback($type, $data);
