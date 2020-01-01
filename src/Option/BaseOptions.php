@@ -116,24 +116,20 @@ trait BaseOptions
      */
     protected function setOptionsBase(array $options)
     {
-        foreach ($options as $name => $value) {
-            switch ($name) {
-                case 'assetNamePrefix':
-                    $this->setAssetNamePrefix($value);
-                    break;
+        if (array_key_exists('assetNamePrefix', $options)) {
+            $this->setAssetNamePrefix($options['assetNamePrefix']);
+        }
 
-                case 'workingDirectory':
-                    $this->setWorkingDirectory($value);
-                    break;
+        if (array_key_exists('workingDirectory', $options)) {
+            $this->setWorkingDirectory($options['workingDirectory']);
+        }
 
-                case 'nodeExecutable':
-                    $this->setNodeExecutable($value);
-                    break;
+        if (array_key_exists('nodeExecutable', $options)) {
+            $this->setNodeExecutable($options['nodeExecutable']);
+        }
 
-                case 'yarnExecutable':
-                    $this->setYarnExecutable($value);
-                    break;
-            }
+        if (array_key_exists('yarnExecutable', $options)) {
+            $this->setYarnExecutable($options['yarnExecutable']);
         }
 
         return $this;

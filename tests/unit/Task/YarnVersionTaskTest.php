@@ -2,19 +2,26 @@
 
 namespace Sweetchuck\Robo\Yarn\Tests\Task;
 
-use Sweetchuck\Robo\Yarn\Task\YarnVersionTask;
-use Codeception\Test\Unit;
-use Codeception\Util\Stub;
-use Robo\Robo;
-use Sweetchuck\Codeception\Module\RoboTaskRunner\DummyOutput;
 use Sweetchuck\Codeception\Module\RoboTaskRunner\DummyProcess;
+use Sweetchuck\Robo\Yarn\Tests\Unit\Task\TaskTestBase;
 
-class YarnVersionTaskTest extends Unit
+/**
+ * @covers \Sweetchuck\Robo\Yarn\Task\YarnVersionTask<extended>
+ */
+class YarnVersionTaskTest extends TaskTestBase
 {
     /**
-     * @var \Sweetchuck\Robo\Yarn\Test\UnitTester
+     * @var \Sweetchuck\Robo\Yarn\Task\YarnVersionTask
      */
-    protected $tester;
+    protected $task;
+
+    /**
+     * @inheritDoc
+     */
+    protected function initTask()
+    {
+        $this->task = $this->taskBuilder->taskYarnVersion();
+    }
 
     public function casesGetCommand(): array
     {
@@ -23,11 +30,15 @@ class YarnVersionTaskTest extends Unit
                 'yarn --version',
                 [],
             ],
-            'workingDirectory' => [
-                "cd 'my-dir' && yarn --version",
+            'all-in-one' => [
+                "cd 'my-dir' && FOO='bar' BAZ='42' yarn --version",
                 [
                     'workingDirectory' => 'my-dir',
-                ]
+                    'envVars' => [
+                        'FOO' => 'bar',
+                        'BAZ' => '42',
+                    ],
+                ],
             ],
         ];
     }
@@ -37,25 +48,20 @@ class YarnVersionTaskTest extends Unit
      */
     public function testGetCommand(string $expected, array $options): void
     {
-        $task = new YarnVersionTask();
-        $task->setOptions($options);
-        $this->tester->assertSame($expected, $task->getCommand());
+        $this->task->setOptions($options);
+        $this->tester->assertSame($expected, $this->task->getCommand());
     }
 
     public function testRunSuccess(): void
     {
-        $expected['exitCode'] = 0;
-        $expected['version'] = '0.42.21';
-        $expected['processTimeout'] = (float) 42;
-        $expected['envVars'] = [
-            'MY_FOO' => 'bar',
+        $expected = [
+            'exitCode' => 0,
+            'version' => '0.42.21',
+            'processTimeout' => (float) 42,
+            'envVars' => [
+                'MY_FOO' => 'bar',
+            ],
         ];
-
-        $backupContainer = Robo::hasContainer() ? Robo::getContainer() : null;
-        $container = Robo::createDefaultContainer();
-        Robo::setContainer($container);
-
-        $mainStdOutput = new DummyOutput([]);
 
         $options = [
             'assetNamePrefix' => 'abc.',
@@ -63,17 +69,9 @@ class YarnVersionTaskTest extends Unit
             'envVars' => $expected['envVars'] ?? [],
         ];
 
-        /** @var \Sweetchuck\Robo\Yarn\Task\YarnVersionTask $task */
-        $task = Stub::construct(
-            YarnVersionTask::class,
-            [],
-            [
-                'processClass' => DummyProcess::class,
-            ]
-        );
-        $task->setOptions($options);
+        $this->task->setOptions($options);
 
-        $task->setEnvVar('MY_B', 'b');
+        $this->task->setEnvVar('MY_B', 'b');
         $expected['envVars']['MY_B'] = 'b';
 
         $processIndex = count(DummyProcess::$instances);
@@ -87,22 +85,13 @@ class YarnVersionTaskTest extends Unit
             'stdError' => '',
         ];
 
-        $task->setLogger($container->get('logger'));
-        $task->setOutput($mainStdOutput);
-
-        $result = $task->run();
-
-        if ($backupContainer) {
-            Robo::setContainer($backupContainer);
-        } else {
-            Robo::unsetContainer();
-        }
+        $result = $this->task->run();
 
         $assetNamePrefix = $options['assetNamePrefix'] ?? '';
 
         $this->tester->assertSame(
             $expected['envVars']['MY_B'],
-            $task->getEnvVar('MY_B'),
+            $this->task->getEnvVar('MY_B'),
             'getEnvVar'
         );
 
@@ -123,14 +112,6 @@ class YarnVersionTaskTest extends Unit
         }
 
         $process = DummyProcess::$instances[$processIndex];
-
-        if (array_key_exists('envVars', $expected)) {
-            $this->tester->assertSame(
-                $expected['envVars'],
-                $process->getEnv(),
-                'Environment variables'
-            );
-        }
 
         if (array_key_exists('processTimeout', $expected)) {
             $this->tester->assertSame(
