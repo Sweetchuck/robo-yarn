@@ -30,8 +30,7 @@
         "ext-json": "*",
         "consolidation/robo": "^2.0",
         "icecave/semver": "^3.0",
-        "mindscreen/yarnlock": "^1.0",
-        "symfony/process": "^4.0"
+        "mindscreen/yarnlock": "^1.0"
     },
     "require-dev": {
         "codeception/codeception": "^4.0",
