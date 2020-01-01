@@ -6,6 +6,7 @@ use Sweetchuck\Robo\Yarn\Option\BaseOptions;
 use Sweetchuck\Robo\Yarn\Utils;
 use Robo\Common\OutputAwareTrait;
 use Robo\Contract\CommandInterface;
+use Symfony\Component\Console\Helper\ProcessHelper;
 use Symfony\Component\Process\Process;
 
 abstract class BaseCliTask extends BaseTask implements CommandInterface
@@ -24,9 +25,9 @@ abstract class BaseCliTask extends BaseTask implements CommandInterface
     protected $command = '';
 
     /**
-     * @var string
+     * @var null|callable
      */
-    protected $processClass = Process::class;
+    protected $processRunCallbackWrapper = null;
 
     // region Option - processTimeout
     /**
@@ -49,6 +50,8 @@ abstract class BaseCliTask extends BaseTask implements CommandInterface
         return $this;
     }
     // endregion
+
+    // region Option - envVars
 
     protected $envVars = [];
 
@@ -82,6 +85,8 @@ abstract class BaseCliTask extends BaseTask implements CommandInterface
         return $this;
     }
 
+    // endregion
+
     public function setOptions(array $options)
     {
         parent::setOptions($options);
@@ -95,6 +100,25 @@ abstract class BaseCliTask extends BaseTask implements CommandInterface
         }
 
         return $this;
+    }
+
+    protected function getOptions(): array
+    {
+        $options = parent::getOptions();
+        $options['processTimeout'] = [
+            'type' => 'other',
+            'value' => $this->getProcessTimeout(),
+        ];
+
+        foreach ($this->getEnvVars() as $name => $value) {
+            $options["envVar:$name"] = [
+                'type' => 'environment',
+                'name' => $name,
+                'value' => $value,
+            ];
+        }
+
+        return $options;
     }
 
     /**
@@ -128,7 +152,8 @@ abstract class BaseCliTask extends BaseTask implements CommandInterface
             switch ($option['type']) {
                 case 'environment':
                     if ($option['value'] !== null) {
-                        $envPattern[] = "{$optionName}=%s";
+                        $envVarName = $option['name'] ?? $optionName;
+                        $envPattern[] = "{$envVarName}=%s";
                         $envArgs[] = escapeshellarg($option['value']);
                     }
                     break;
@@ -222,6 +247,9 @@ abstract class BaseCliTask extends BaseTask implements CommandInterface
     {
         parent::runPrepare();
         $this->command = $this->getCommand();
+        $this->processRunCallbackWrapper = function (string $type, string $data): void {
+            $this->processRunCallback($type, $data);
+        };
 
         return $this;
     }
@@ -241,22 +269,39 @@ abstract class BaseCliTask extends BaseTask implements CommandInterface
      */
     protected function runAction()
     {
-        $x = 0;
-        /** @var \Symfony\Component\Process\Process $process */
-        $process = new $this->processClass(
-            $this->command,
-            null,
-            $this->getEnvVars() ?: null,
-            null,
-            $this->getProcessTimeout()
-        );
+        $processInner = Process::fromShellCommandline($this->command);
+        $processInner->setTimeout($this->options['processTimeout']['value']);
 
-        $this->actionExitCode = $process->run(function ($type, $data) {
-            $this->runCallback($type, $data);
-        });
+        $process = $this
+            ->getProcessHelper()
+            ->run($this->output(), $processInner, null, $this->processRunCallbackWrapper);
+
+        $this->actionExitCode = $process->getExitCode();
         $this->actionStdOutput = $process->getOutput();
         $this->actionStdError = $process->getErrorOutput();
 
         return $this;
+    }
+
+    protected function processRunCallback(string $type, string $data): void
+    {
+        switch ($type) {
+            case Process::OUT:
+                $this->output()->write($data);
+                break;
+
+            case Process::ERR:
+                $this->printTaskError($data);
+                break;
+        }
+    }
+
+    protected function getProcessHelper(): ProcessHelper
+    {
+        return $this
+            ->getContainer()
+            ->get('application')
+            ->getHelperSet()
+            ->get('process');
     }
 }

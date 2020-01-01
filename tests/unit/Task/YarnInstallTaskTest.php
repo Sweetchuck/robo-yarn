@@ -2,15 +2,26 @@
 
 namespace Sweetchuck\Robo\Yarn\Tests\Task;
 
-use Sweetchuck\Robo\Yarn\Task\YarnInstallTask;
-use Codeception\Test\Unit;
+use Sweetchuck\Robo\Yarn\Tests\Unit\Task\TaskTestBase;
 
-class YarnInstallTaskTest extends Unit
+/**
+ * @covers \Sweetchuck\Robo\Yarn\Task\YarnInstallTask<extended>
+ */
+class YarnInstallTaskTest extends TaskTestBase
 {
+
     /**
-     * @var \Sweetchuck\Robo\Yarn\Test\UnitTester
+     * @var \Sweetchuck\Robo\Yarn\Task\YarnInstallTask
      */
-    protected $tester;
+    protected $task;
+
+    /**
+     * @inheritDoc
+     */
+    protected function initTask()
+    {
+        $this->task = $this->taskBuilder->taskYarnInstall();
+    }
 
     public function casesGetCommand(): array
     {
@@ -202,16 +213,14 @@ class YarnInstallTaskTest extends Unit
      */
     public function testGetCommand(string $expected, array $options): void
     {
-        $task = new YarnInstallTask();
-        $task->setOptions($options);
-        $this->tester->assertEquals($expected, $task->getCommand());
+        $this->task->setOptions($options);
+        $this->tester->assertSame($expected, $this->task->getCommand());
     }
 
     public function testGetSetSkipIfPackageJsonNotExists(): void
     {
-        $task = new YarnInstallTask();
-        $this->assertEquals(false, $task->getSkipIfPackageJsonNotExists());
-        $task->setOptions(['skipIfPackageJsonNotExists' => true]);
-        $this->assertEquals(true, $task->getSkipIfPackageJsonNotExists());
+        $this->tester->assertSame(false, $this->task->getSkipIfPackageJsonNotExists());
+        $this->task->setOptions(['skipIfPackageJsonNotExists' => true]);
+        $this->tester->assertSame(true, $this->task->getSkipIfPackageJsonNotExists());
     }
 }

@@ -4,17 +4,28 @@ declare(strict_types = 1);
 
 namespace Sweetchuck\Robo\Yarn\Tests\Task;
 
-use Codeception\Test\Unit;
 use org\bovigo\vfs\vfsStream;
-use Robo\Robo;
-use Sweetchuck\Robo\Yarn\Task\NodeVersionTask;
+use Sweetchuck\Robo\Yarn\Tests\Unit\Task\TaskTestBase;
 use Webmozart\PathUtil\Path;
 
 /**
- * @covers \Sweetchuck\Robo\Yarn\Task\NodeVersionTask
+ * @covers \Sweetchuck\Robo\Yarn\Task\NodeVersionTask<extended>
  */
-class NodeVersionTaskTest extends Unit
+class NodeVersionTaskTest extends TaskTestBase
 {
+
+    /**
+     * @var \Sweetchuck\Robo\Yarn\Task\NodeVersionTask
+     */
+    protected $task;
+
+    /**
+     * @inheritDoc
+     */
+    protected function initTask()
+    {
+        $this->task = $this->taskBuilder->taskYarnNodeVersion();
+    }
 
     public function casesRunSuccess(): array
     {
@@ -200,21 +211,17 @@ class NodeVersionTaskTest extends Unit
             $options['workingDirectory'] ?? ''
         );
 
-        $container = Robo::createDefaultContainer();
-        Robo::setContainer($container);
+        $this->task->setOptions($options);
 
-        $task = new NodeVersionTask();
-        $task->setOptions($options);
-
-        $result = $task->run();
+        $result = $this->task->run();
 
         if (array_key_exists('exitCode', $expected)) {
-            $this->assertSame($expected['exitCode'], $result->getExitCode());
+            $this->tester->assertSame($expected['exitCode'], $result->getExitCode());
         }
 
         if (array_key_exists('assets', $expected)) {
             foreach ($expected['assets'] as $assetName => $assetValue) {
-                $this->assertSame($assetValue, $result[$assetName]);
+                $this->tester->assertSame($assetValue, $result[$assetName]);
             }
         }
     }

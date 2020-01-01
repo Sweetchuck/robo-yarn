@@ -2,6 +2,8 @@
 
 namespace Sweetchuck\Robo\Yarn\Task;
 
+use League\Container\ContainerAwareInterface;
+use League\Container\ContainerAwareTrait;
 use Sweetchuck\Robo\Yarn\Option\BaseOptions;
 use Robo\Common\OutputAwareTrait;
 use Robo\Contract\OutputAwareInterface;
@@ -10,8 +12,9 @@ use Robo\Task\BaseTask as RoboBaseTask;
 use Robo\TaskInfo;
 use Symfony\Component\Process\Process;
 
-abstract class BaseTask extends RoboBaseTask implements OutputAwareInterface
+abstract class BaseTask extends RoboBaseTask implements ContainerAwareInterface, OutputAwareInterface
 {
+    use ContainerAwareTrait;
     use OutputAwareTrait;
     use BaseOptions;
 
@@ -19,6 +22,11 @@ abstract class BaseTask extends RoboBaseTask implements OutputAwareInterface
      * @var string
      */
     protected $taskName = '';
+
+    /**
+     * @var array
+     */
+    protected $options = [];
 
     /**
      * @var int
@@ -73,6 +81,8 @@ abstract class BaseTask extends RoboBaseTask implements OutputAwareInterface
      */
     protected function runPrepare()
     {
+        $this->options = $this->getOptions();
+
         return $this;
     }
 
@@ -99,35 +109,12 @@ abstract class BaseTask extends RoboBaseTask implements OutputAwareInterface
 
     protected function runReturn(): Result
     {
-        $assetNamePrefix = $this->getAssetNamePrefix();
-        if ($assetNamePrefix === '') {
-            $data = $this->assets;
-        } else {
-            $data = [];
-            foreach ($this->assets as $key => $value) {
-                $data["{$assetNamePrefix}{$key}"] = $value;
-            }
-        }
-
         return new Result(
             $this,
             $this->getTaskResultCode(),
             $this->getTaskResultMessage(),
-            $data
+            $this->getAssetsWithPrefixedNames()
         );
-    }
-
-    protected function runCallback(string $type, string $data): void
-    {
-        switch ($type) {
-            case Process::OUT:
-                $this->output()->write($data);
-                break;
-
-            case Process::ERR:
-                $this->printTaskError($data);
-                break;
-        }
     }
 
     /**
@@ -154,5 +141,20 @@ abstract class BaseTask extends RoboBaseTask implements OutputAwareInterface
     protected function getTaskResultMessage(): string
     {
         return $this->actionStdError;
+    }
+
+    protected function getAssetsWithPrefixedNames(): array
+    {
+        $prefix = $this->getAssetNamePrefix();
+        if ($prefix === '') {
+            return $this->assets;
+        }
+
+        $assets = [];
+        foreach ($this->assets as $key => $value) {
+            $assets["{$prefix}{$key}"] = $value;
+        }
+
+        return $assets;
     }
 }
