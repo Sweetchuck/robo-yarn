@@ -269,7 +269,11 @@ abstract class BaseCliTask extends BaseTask implements CommandInterface
      */
     protected function runAction()
     {
-        $processInner = Process::fromShellCommandline($this->command);
+        // @todo Remove this once drupal/core uses symfony/process:^4.
+        $processInner =  is_callable([Process::class, 'fromShellCommandline']) ?
+            Process::fromShellCommandline($this->command)
+            : new Process($this->command);
+
         $processInner->setTimeout($this->options['processTimeout']['value']);
 
         $process = $this
