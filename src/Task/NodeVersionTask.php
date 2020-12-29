@@ -7,7 +7,7 @@ namespace Sweetchuck\Robo\Yarn\Task;
 use Icecave\SemVer\Version as SemVerVersion;
 use Exception;
 use Mindscreen\YarnLock\YarnLock;
-use Sweetchuck\Robo\Yarn\Utils;
+use Sweetchuck\Utils\Filesystem;
 
 /**
  * This task detects that which NodeJS version should be used in a certain directory.
@@ -23,11 +23,11 @@ class NodeVersionTask extends BaseTask
     // region Options
     // region rootDirectory
     /**
-     * @var string
+     * @var ?string
      */
-    protected $rootDirectory = '';
+    protected $rootDirectory = null;
 
-    public function getRootDirectory(): string
+    public function getRootDirectory(): ?string
     {
         return $this->rootDirectory;
     }
@@ -35,7 +35,7 @@ class NodeVersionTask extends BaseTask
     /**
      * @return $this
      */
-    public function setRootDirectory(string $value)
+    public function setRootDirectory(?string $value)
     {
         $this->rootDirectory = $value;
 
@@ -80,22 +80,25 @@ class NodeVersionTask extends BaseTask
         $wd = $options['workingDirectory']['value'] ?: '.';
         $rootDir = $options['rootDirectory']['value'];
 
-        $filePath = Utils::findFileUpward('yarn.lock', $wd, $rootDir);
-        if ($filePath) {
-            $this->runActionYarnLock($filePath);
+        $fileName = 'yarn.lock';
+        $dir = Filesystem::findFileUpward($fileName, $wd, $rootDir);
+        if ($dir !== null) {
+            $this->runActionYarnLock("$dir/$fileName");
         }
 
         if (!isset($this->assets['full'])) {
-            $filePath = Utils::findFileUpward('package-lock.json', $wd, $rootDir);
-            if ($filePath) {
-                $this->runActionPackageLock($filePath);
+            $fileName = 'package-lock.json';
+            $dir = Filesystem::findFileUpward($fileName, $wd, $rootDir);
+            if ($dir !== null) {
+                $this->runActionPackageLock("$dir/$fileName");
             }
         }
 
         if (!isset($this->assets['full'])) {
-            $filePath = Utils::findFileUpward('.nvmrc', $wd, $rootDir);
-            if ($filePath) {
-                $this->runActionNvmRc($filePath);
+            $fileName = '.nvmrc';
+            $dir = Filesystem::findFileUpward($fileName, $wd, $rootDir);
+            if ($dir !== null) {
+                $this->runActionNvmRc("$dir/$fileName");
             }
         }
 
@@ -110,7 +113,7 @@ class NodeVersionTask extends BaseTask
         $this->assets['full'] = null;
 
         try {
-            $yarnLock = YarnLock::fromString(Utils::fileGetContents($filePath));
+            $yarnLock = YarnLock::fromString(Filesystem::fileGetContents($filePath));
         } catch (Exception $e) {
             return $this;
         }
@@ -127,7 +130,7 @@ class NodeVersionTask extends BaseTask
      */
     protected function runActionPackageLock(string $filePath)
     {
-        $lock = json_decode(Utils::fileGetContents($filePath), true);
+        $lock = json_decode(Filesystem::fileGetContents($filePath), true);
         if ($lock === null) {
             throw new Exception(json_last_error_msg(), json_last_error());
         }
@@ -142,7 +145,7 @@ class NodeVersionTask extends BaseTask
      */
     protected function runActionNvmRc(string $filePath)
     {
-        $this->assets['full'] = trim(Utils::fileGetContents($filePath)) ?: null;
+        $this->assets['full'] = trim(Filesystem::fileGetContents($filePath)) ?: null;
 
         return $this;
     }

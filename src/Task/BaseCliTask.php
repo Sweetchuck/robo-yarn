@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Sweetchuck\Robo\Yarn\Task;
 
 use Sweetchuck\Robo\Yarn\Option\BaseOptions;
-use Sweetchuck\Robo\Yarn\Utils;
 use Robo\Common\OutputAwareTrait;
 use Robo\Contract\CommandInterface;
+use Sweetchuck\Utils\Filter\ArrayFilterEnabled;
 use Symfony\Component\Console\Helper\ProcessHelper;
 use Symfony\Component\Process\Process;
 
@@ -212,7 +214,7 @@ abstract class BaseCliTask extends BaseTask implements CommandInterface
                     break;
 
                 case 'space-separated':
-                    $items = Utils::filterEnabled($option['value']);
+                    $items = array_filter($options['value'], new ArrayFilterEnabled());
                     if ($items) {
                         $cmdPattern[] = "--$optionName %s";
                         $cmdArgs[] = escapeshellarg(implode(' ', $items));

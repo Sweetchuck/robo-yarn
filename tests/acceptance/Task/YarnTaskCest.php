@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Sweetchuck\Robo\Yarn\Tests\Task;
 
 use Sweetchuck\Robo\Yarn\Test\AcceptanceTester;

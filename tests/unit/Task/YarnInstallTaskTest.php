@@ -1,8 +1,8 @@
 <?php
 
-namespace Sweetchuck\Robo\Yarn\Tests\Task;
+declare(strict_types = 1);
 
-use Sweetchuck\Robo\Yarn\Tests\Unit\Task\TaskTestBase;
+namespace Sweetchuck\Robo\Yarn\Tests\Unit\Task;
 
 /**
  * @covers \Sweetchuck\Robo\Yarn\Task\YarnInstallTask<extended>

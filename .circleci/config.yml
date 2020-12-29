@@ -1,17 +1,25 @@
 
 version: 2.1
 
+.env_common: &env_common
+    SHELL: '/bin/bash'
+
+.env_xdebug: &env_xdebug
+    XDEBUG_MODE: 'coverage'
+
 .env_composer: &env_composer
     COMPOSER_NO_INTERACTION: '1'
     COMPOSER_MEMORY_LIMIT: '-1'
     COMPOSER_DISABLE_XDEBUG_WARN: '1'
 
 orbs:
-    codecov: 'codecov/codecov@1.0.4'
+    codecov: 'codecov/codecov@1.1.2'
 
 executors:
     php704:
         environment:
+            <<: *env_common
+            <<: *env_xdebug
             <<: *env_composer
 
         docker:
@@ -20,19 +28,13 @@ executors:
 
     php703:
         environment:
+            <<: *env_common
+            <<: *env_xdebug
             <<: *env_composer
 
         docker:
             -   name: 'main'
                 image: 'misterio92/ci-php-node:3.0'
-
-    php702:
-        environment:
-            <<: *env_composer
-
-        docker:
-            -   name: 'main'
-                image: 'misterio92/ci-php-node:2.0'
 
 commands:
     install_yarn:
@@ -59,19 +61,17 @@ commands:
             -   restore_cache:
                     name: 'Composer - cache restore'
                     keys:
-                        - 'composer-{{ checksum "./composer.lock" }}-1'
+                        - 'composer-{{ checksum "./composer.lock" }}-2'
 
             -   run:
                     name: 'Composer - install'
                     command: >
-                        [[ -d "$(composer config vendor-dir)" ]] || composer install --no-progress
+                        composer install --no-progress
 
             -   save_cache:
                     name: 'Composer - cache save'
-                    key: 'composer-{{ checksum "./composer.lock" }}-1'
+                    key: 'composer-{{ checksum "./composer.lock" }}-2'
                     paths:
-                        - './bin/'
-                        - './vendor/'
                         - '~/.composer/cache/'
 
     lint:
@@ -96,13 +96,13 @@ commands:
 
 jobs:
     build:
-        executor: 'php702'
+        executor: 'php703'
         working_directory: '~/repo'
         steps:
             - 'checkout'
             - 'composer_install'
     lint:
-        executor: 'php702'
+        executor: 'php703'
         working_directory: '~/repo'
         steps:
             - 'checkout'
@@ -126,15 +126,6 @@ jobs:
             - 'install_php_requirements'
             - 'composer_install'
             - 'test'
-    test_php702:
-        executor: 'php702'
-        working_directory: '~/repo'
-        steps:
-            - 'checkout'
-            - 'install_yarn'
-            - 'install_php_requirements'
-            - 'composer_install'
-            - 'test'
 
 workflows:
     lint_and_test:
@@ -151,9 +142,5 @@ workflows:
                         - build
             -
                 test_php703:
-                    requires:
-                        - build
-            -
-                test_php702:
                     requires:
                         - build

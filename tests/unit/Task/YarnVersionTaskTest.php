@@ -1,9 +1,10 @@
 <?php
 
-namespace Sweetchuck\Robo\Yarn\Tests\Task;
+declare(strict_types = 1);
+
+namespace Sweetchuck\Robo\Yarn\Tests\Unit\Task;
 
 use Sweetchuck\Codeception\Module\RoboTaskRunner\DummyProcess;
-use Sweetchuck\Robo\Yarn\Tests\Unit\Task\TaskTestBase;
 
 /**
  * @covers \Sweetchuck\Robo\Yarn\Task\YarnVersionTask<extended>

@@ -11,7 +11,7 @@ use Robo\Config\Config;
 use Robo\Robo;
 use Sweetchuck\Codeception\Module\RoboTaskRunner\DummyOutput;
 use Sweetchuck\Codeception\Module\RoboTaskRunner\DummyProcess;
-use Sweetchuck\Robo\Yarn\Test\Helper\Dummy\DummyProcessHelper;
+use Sweetchuck\Codeception\Module\RoboTaskRunner\DummyProcessHelper;
 use Sweetchuck\Robo\Yarn\Test\Helper\Dummy\DummyTaskBuilder;
 use Symfony\Component\Console\Application as SymfonyApplication;
 use Symfony\Component\ErrorHandler\BufferingLogger;
@@ -59,7 +59,7 @@ abstract class TaskTestBase extends Unit
         DummyProcess::reset();
 
         $this->container = new LeagueContainer();
-        $application = new SymfonyApplication('Sweetchuck - Robo PHPUnit', '1.0.0');
+        $application = new SymfonyApplication('Sweetchuck - Robo Yarn', '1.0.0');
         $application->getHelperSet()->set(new DummyProcessHelper(), 'process');
         $this->config = new Config();
         $input = null;
