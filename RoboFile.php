@@ -473,11 +473,13 @@ class RoboFile extends Tasks
             $suiteFiles = Finder::create()
                 ->in($this->codeceptionInfo['paths']['tests'])
                 ->files()
+                ->name('*.suite.dist.yml')
                 ->name('*.suite.yml')
                 ->depth(0);
 
             foreach ($suiteFiles as $suiteFile) {
-                $this->codeceptionSuiteNames[] = $suiteFile->getBasename('.suite.yml');
+                $parts = explode('.', $suiteFile->getBasename());
+                $this->codeceptionSuiteNames[] = reset($parts);
             }
         }
 

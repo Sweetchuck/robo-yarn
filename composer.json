@@ -8,7 +8,7 @@
     ],
     "authors": [
         {
-            "name": "Dávid Andor",
+            "name": "Andor",
             "role": "Maintainer",
             "homepage": "https://github.com/Sweetchuck"
         }
@@ -22,15 +22,17 @@
     "prefer-stable": true,
     "config": {
         "bin-dir": "bin",
-        "sort-packages": true,
-        "optimize-autoloader": true
+        "optimize-autoloader": true,
+        "preferred-install": "dist",
+        "sort-packages": true
     },
     "require": {
-        "php": ">=7.2",
+        "php": ">=7.3",
         "ext-json": "*",
         "consolidation/robo": "^2.0",
         "icecave/semver": "^3.0",
-        "mindscreen/yarnlock": "^1.0"
+        "mindscreen/yarnlock": "^1.0",
+        "sweetchuck/utils": "1.x-dev"
     },
     "require-dev": {
         "codeception/codeception": "^4.0",
@@ -38,12 +40,12 @@
         "danielstjules/stringy": "^3.1",
         "mikey179/vfsstream": "^1.6",
         "squizlabs/php_codesniffer": "^3.5",
-        "sweetchuck/codeception-module-robo-task-runner": "^0.7",
-        "sweetchuck/git-hooks": "^0.0",
-        "sweetchuck/robo-git": "^0.2",
-        "sweetchuck/robo-phpcs": "^0.1",
-        "symfony/error-handler": "^5.0",
-        "symfony/finder": "^4.0",
+        "sweetchuck/codeception-module-robo-task-runner": "1.x-dev",
+        "sweetchuck/git-hooks": "2.x-dev",
+        "sweetchuck/robo-git": "1.x-dev",
+        "sweetchuck/robo-phpcs": "1.x-dev",
+        "symfony/error-handler": "^4.0 || ^5.0",
+        "symfony/finder": "^4.0 || ^5.0",
         "webmozart/path-util": "^2.3"
     },
     "autoload": {
@@ -53,18 +55,11 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Sweetchuck\\Robo\\Yarn\\Composer\\": "src-dev/Composer/",
-            "Sweetchuck\\Robo\\Yarn\\Test\\Helper\\": "tests/_support/Helper/",
+            "Sweetchuck\\Robo\\Yarn\\Test\\": "tests/_support/",
             "Sweetchuck\\Robo\\Yarn\\Tests\\Acceptance\\": "tests/acceptance/",
             "Sweetchuck\\Robo\\Yarn\\Tests\\Unit\\": "tests/unit/"
         }
     },
-    "scripts": {
-        "post-install-cmd": [
-            "\\Sweetchuck\\Robo\\Yarn\\Composer\\Scripts::postInstallCmd"
-        ],
-        "post-update-cmd": [
-            "\\Sweetchuck\\Robo\\Yarn\\Composer\\Scripts::postUpdateCmd"
-        ]
-    }
+    "scripts": {},
+    "scripts-descriptions": {}
 }
