@@ -11,6 +11,10 @@ version: 2.1
     COMPOSER_NO_INTERACTION: '1'
     COMPOSER_MEMORY_LIMIT: '-1'
     COMPOSER_DISABLE_XDEBUG_WARN: '1'
+    COMPOSER_CACHE_DIR: '/root/.cache/composer'
+
+.env_yarn: &env_yarn
+    YARN_CACHE_FOLDER: '/root/.cache/yarn'
 
 orbs:
     codecov: 'codecov/codecov@1.1.2'
@@ -21,6 +25,7 @@ executors:
             <<: *env_common
             <<: *env_xdebug
             <<: *env_composer
+            <<: *env_yarn
 
         docker:
             -   name: 'main'
@@ -31,6 +36,7 @@ executors:
             <<: *env_common
             <<: *env_xdebug
             <<: *env_composer
+            <<: *env_yarn
 
         docker:
             -   name: 'main'
@@ -58,17 +64,20 @@ commands:
     composer_install:
         description: 'Install Composer dependencies with cache restore and save'
         steps:
-            -   restore_cache:
+            -
+                restore_cache:
                     name: 'Composer - cache restore'
                     keys:
                         - 'composer-{{ checksum "./composer.lock" }}-2'
 
-            -   run:
+            -
+                run:
                     name: 'Composer - install'
                     command: >
                         composer install --no-progress
 
-            -   save_cache:
+            -
+                save_cache:
                     name: 'Composer - cache save'
                     key: 'composer-{{ checksum "./composer.lock" }}-2'
                     paths:
@@ -84,15 +93,37 @@ commands:
     test:
         description: 'Run tests'
         steps:
-            -   run:
+            -
+                restore_cache:
+                    name: 'Yarn - cache restore'
+                    keys:
+                        - 'yarn-{{ checksum "./tests/_data/fixtures/01/package.json" }}-v1'
+            -
+                run:
                     name: 'Run unit tests'
-                    command: 'bin/robo test'
-            -   codecov/upload:
+                    command: 'bin/robo test unit'
+            -
+                codecov/upload:
                     flags: 'unit'
-                    file: './reports/machine/coverage/coverage.xml'
-            -   store_test_results:
-                    name: 'Store unit test results'
+                    file: './tests/_output/machine/coverage/unit/coverage.xml'
+            -
+                run:
+                    name: 'Run acceptance tests'
+                    command: 'bin/robo test acceptance'
+            -
+                codecov/upload:
+                    flags: 'acceptance'
+                    file: './tests/_output/machine/coverage/acceptance/coverage.xml'
+            -
+                store_test_results:
+                    name: 'Store test results'
                     path: './reports/machine/unit'
+            -
+                save_cache:
+                    name: 'Yarn - cache save'
+                    key: 'yarn-{{ checksum "./tests/_data/fixtures/01/package.json" }}-v1'
+                    paths:
+                        - '/root/.cache/yarn/'
 
 jobs:
     build:
@@ -135,12 +166,12 @@ workflows:
             -
                 lint:
                     requires:
-                        - build
+                        - 'build'
             -
                 test_php704:
                     requires:
-                        - build
+                        - 'build'
             -
                 test_php703:
                     requires:
-                        - build
+                        - 'build'
