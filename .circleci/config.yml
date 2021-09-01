@@ -20,6 +20,17 @@ orbs:
     codecov: 'codecov/codecov@1.1.2'
 
 executors:
+    php800:
+        environment:
+            <<: *env_common
+            <<: *env_xdebug
+            <<: *env_composer
+            <<: *env_yarn
+
+        docker:
+            -   name: 'main'
+                image: 'misterio92/ci-php-node:5.0'
+
     php704:
         environment:
             <<: *env_common
@@ -30,17 +41,6 @@ executors:
         docker:
             -   name: 'main'
                 image: 'misterio92/ci-php-node:4.0'
-
-    php703:
-        environment:
-            <<: *env_common
-            <<: *env_xdebug
-            <<: *env_composer
-            <<: *env_yarn
-
-        docker:
-            -   name: 'main'
-                image: 'misterio92/ci-php-node:3.0'
 
 commands:
     install_yarn:
@@ -59,7 +59,7 @@ commands:
                     name: 'Install required PHP extensions'
                     command: |
                         apt-get update
-                        apt-get install -y php-xdebug
+                        apt-get install -y "php$(php -r 'echo substr(PHP_VERSION, 0, 3);')-xdebug"
 
     composer_install:
         description: 'Install Composer dependencies with cache restore and save'
@@ -127,20 +127,20 @@ commands:
 
 jobs:
     build:
-        executor: 'php703'
+        executor: 'php704'
         working_directory: '~/repo'
         steps:
             - 'checkout'
             - 'composer_install'
     lint:
-        executor: 'php703'
+        executor: 'php704'
         working_directory: '~/repo'
         steps:
             - 'checkout'
             - 'composer_install'
             - 'lint'
-    test_php704:
-        executor: 'php704'
+    test_php800:
+        executor: 'php800'
         working_directory: '~/repo'
         steps:
             - 'checkout'
@@ -148,8 +148,8 @@ jobs:
             - 'install_php_requirements'
             - 'composer_install'
             - 'test'
-    test_php703:
-        executor: 'php703'
+    test_php704:
+        executor: 'php704'
         working_directory: '~/repo'
         steps:
             - 'checkout'
@@ -168,10 +168,10 @@ workflows:
                     requires:
                         - 'build'
             -
-                test_php704:
+                test_php800:
                     requires:
                         - 'build'
             -
-                test_php703:
+                test_php704:
                     requires:
                         - 'build'
