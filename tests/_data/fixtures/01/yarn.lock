@@ -2,32 +2,14 @@
 # yarn lockfile v1
 
 
-array-uniq@^1.0.0:
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/array-uniq/-/array-uniq-1.0.3.tgz#af6ac877a25cc7f74e058894753858dfdb24fdb6"
-  integrity sha1-r2rId6Jcx/dOBYiUdThY39sk/bY=
-
-find-versions@1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/find-versions/-/find-versions-1.0.0.tgz#3b638b7070b04f2e68b4ca887014c7b9b8dc7011"
-  integrity sha1-O2OLcHCwTy5otMqIcBTHubjccBE=
+find-versions@5.0.0:
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/find-versions/-/find-versions-5.0.0.tgz#3e088dbc5083162c86fb36dbd7b84d64b9ee1e45"
+  integrity sha512-Jid3bdamPSNTb7r28PItNl/wm8frLj7NgEztJXK8UftodFRlynojEvUo4dyr5ftgfqgGhCF6DWaiJVFbpX3uPA==
   dependencies:
-    array-uniq "^1.0.0"
-    get-stdin "^1.0.0"
-    minimist "^1.1.0"
-    semver-regex "^1.0.0"
+    semver-regex "^4.0.0"
 
-get-stdin@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/get-stdin/-/get-stdin-1.0.0.tgz#00bd5a494c81c372f5629bea103bbffe7a1da3ce"
-  integrity sha1-AL1aSUyBw3L1YpvqEDu//nodo84=
-
-minimist@^1.1.0:
-  version "1.2.5"
-  resolved "https://registry.yarnpkg.com/minimist/-/minimist-1.2.5.tgz#67d66014b66a6a8aaa0c083c5fd58df4e4e97602"
-  integrity sha512-FM9nNUYrRBAELZQT3xeZQ7fmMOBg6nWNmJKTcgsJeaLstP/UODVpGsr5OhXhhXg6f+qtJ8uiZ+PUxkDWcgIXLw==
-
-semver-regex@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/semver-regex/-/semver-regex-1.0.0.tgz#92a4969065f9c70c694753d55248fc68f8f652c9"
-  integrity sha1-kqSWkGX5xwxpR1PVUkj8aPj2Usk=
+semver-regex@^4.0.0:
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/semver-regex/-/semver-regex-4.0.1.tgz#b13d2ea2f7f2328f838edd99542796304a8e2dc6"
+  integrity sha512-cByCq+HYEpHMMx5oys/YqkUnUfVf4HHnG3a65rXZQgSVpnUSE68dD3FFowDL7q2KqUjxBTc3iDEJ7/qPsRXe1Q==

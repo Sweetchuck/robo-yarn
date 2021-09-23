@@ -3,6 +3,6 @@
     "description": "Test helper.",
     "private": true,
     "dependencies": {
-        "find-versions": "1.0.0"
+        "find-versions": "5.0.0"
     }
 }
