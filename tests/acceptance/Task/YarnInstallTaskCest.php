@@ -17,12 +17,9 @@ class YarnInstallTaskCest
     /**
      * @var string[]
      */
-    protected $tmpDirs = [];
+    protected array $tmpDirs = [];
 
-    /**
-     * @var null|\Symfony\Component\Filesystem\Filesystem
-     */
-    protected $fs = null;
+    protected Filesystem $fs;
 
     public function __construct()
     {
@@ -52,9 +49,25 @@ class YarnInstallTaskCest
             " [Yarn - Install] cd %s && yarn install\n",
             escapeshellarg($tmpDir)
         );
-        $I->assertEquals(0, $I->getRoboTaskExitCode($id));
-        $I->assertEquals($expectedStdOutput, $I->getRoboTaskStdOutput($id));
-        $I->assertEquals($expectedStdError, $I->getRoboTaskStdError($id));
+
+        $I->assertSame(
+            0,
+            $I->getRoboTaskExitCode($id),
+            'exitCode',
+        );
+
+        $I->assertStringContainsString(
+            $expectedStdOutput,
+            $I->getRoboTaskStdOutput($id),
+            'stdOutput',
+        );
+
+        $I->assertStringContainsString(
+            $expectedStdError,
+            $I->getRoboTaskStdError($id),
+            'stdError',
+        );
+
         $I->assertFileExists("$tmpDir/node_modules");
     }
 
@@ -77,9 +90,25 @@ class YarnInstallTaskCest
             " [Yarn - Install] cd %s && yarn install\n",
             escapeshellarg($tmpDir)
         );
-        $I->assertEquals(0, $I->getRoboTaskExitCode($id));
-        $I->assertEquals($expectedStdOutput, $I->getRoboTaskStdOutput($id));
-        $I->assertEquals($expectedStdError, $I->getRoboTaskStdError($id));
+
+        $I->assertSame(
+            0,
+            $I->getRoboTaskExitCode($id),
+            'exitCode',
+        );
+
+        $I->assertStringContainsString(
+            $expectedStdOutput,
+            $I->getRoboTaskStdOutput($id),
+            'stdOutput',
+        );
+
+        $I->assertStringContainsString(
+            $expectedStdError,
+            $I->getRoboTaskStdError($id),
+            'stdError',
+        );
+
         $I->assertFileExists("$tmpDir/node_modules");
     }
 
@@ -101,9 +130,25 @@ class YarnInstallTaskCest
             " [Yarn - Install] cd %s && yarn install\n",
             escapeshellarg($tmpDir)
         );
-        $I->assertEquals(0, $I->getRoboTaskExitCode($id));
-        $I->assertEquals($expectedStdOutput, $I->getRoboTaskStdOutput($id));
-        $I->assertEquals($expectedStdError, $I->getRoboTaskStdError($id));
+
+        $I->assertSame(
+            0,
+            $I->getRoboTaskExitCode($id),
+            'exitCode',
+        );
+
+        $I->assertStringContainsString(
+            $expectedStdOutput,
+            $I->getRoboTaskStdOutput($id),
+            'stdOutput',
+        );
+
+        $I->assertStringContainsString(
+            $expectedStdError,
+            $I->getRoboTaskStdError($id),
+            'stdError',
+        );
+
         $I->assertFileExists("$tmpDir/node_modules");
     }
 
@@ -126,9 +171,25 @@ class YarnInstallTaskCest
             " [Yarn - Install] Skip \"yarn install\" in \"%s\"\n",
             $tmpDir
         );
-        $I->assertEquals(0, $I->getRoboTaskExitCode($id));
-        $I->assertEquals($expectedStdOutput, $I->getRoboTaskStdOutput($id));
-        $I->assertEquals($expectedStdError, $I->getRoboTaskStdError($id));
+
+        $I->assertSame(
+            0,
+            $I->getRoboTaskExitCode($id),
+            'exitCode',
+        );
+
+        $I->assertStringContainsString(
+            $expectedStdOutput,
+            $I->getRoboTaskStdOutput($id),
+            'stdOutput',
+        );
+
+        $I->assertStringContainsString(
+            $expectedStdError,
+            $I->getRoboTaskStdError($id),
+            'stdError',
+        );
+
         $I->assertFileNotExists("$tmpDir/node_modules");
     }
 

@@ -17,12 +17,9 @@ class YarnVersionTaskCest
     /**
      * @var string[]
      */
-    protected $tmpDirs = [];
+    protected array $tmpDirs = [];
 
-    /**
-     * @var null|\Symfony\Component\Filesystem\Filesystem
-     */
-    protected $fs = null;
+    protected Filesystem $fs;
 
     public function __construct()
     {
@@ -41,12 +38,33 @@ class YarnVersionTaskCest
         $id = 'version';
         $I->runRoboTask($id, YarnRoboFile::class, 'version:success', $tmpDir);
 
+        $expectedStdOutput = '/^\d+\.\d+/';
         $expectedStdError = sprintf(
             " [Yarn - Version] cd %s && yarn --version\n",
             escapeshellarg($tmpDir)
         );
-        $I->assertEquals(0, $I->getRoboTaskExitCode($id));
-        $I->assertEquals($expectedStdError, $I->getRoboTaskStdError($id));
+
+        $actualExitCode = $I->getRoboTaskExitCode($id);
+        $actualStdOutput = $I->getRoboTaskStdOutput($id);
+        $actualStdError = $I->getRoboTaskStdError($id);
+
+        $I->assertSame(
+            0,
+            $actualExitCode,
+            'exitCode',
+        );
+
+        $I->assertRegExp(
+            $expectedStdOutput,
+            $actualStdOutput,
+            'stdOutput',
+        );
+
+        $I->assertStringContainsString(
+            $expectedStdError,
+            $actualStdError,
+            'stdError',
+        );
     }
 
     protected function createTmpDir(string $fixture): string
