@@ -8,6 +8,7 @@ use Sweetchuck\Codeception\Module\RoboTaskRunner\DummyProcess;
 
 /**
  * @covers \Sweetchuck\Robo\Yarn\Task\YarnVersionTask<extended>
+ * @covers \Sweetchuck\Robo\Yarn\YarnTaskLoader
  */
 class YarnVersionTaskTest extends TaskTestBase
 {

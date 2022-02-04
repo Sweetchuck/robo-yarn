@@ -6,6 +6,7 @@ namespace Sweetchuck\Robo\Yarn\Tests\Unit\Task;
 
 /**
  * @covers \Sweetchuck\Robo\Yarn\Task\YarnInstallTask<extended>
+ * @covers \Sweetchuck\Robo\Yarn\YarnTaskLoader
  */
 class YarnInstallTaskTest extends TaskTestBase
 {
