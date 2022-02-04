@@ -1,7 +1,7 @@
 # Robo task wrapper for Yarn
 
-[![CircleCI](https://circleci.com/gh/Sweetchuck/robo-yarn.svg?style=svg)](https://circleci.com/gh/Sweetchuck/robo-yarn)
-[![codecov](https://codecov.io/gh/Sweetchuck/robo-yarn/branch/master/graph/badge.svg)](https://codecov.io/gh/Sweetchuck/robo-yarn)
+[![CircleCI](https://circleci.com/gh/Sweetchuck/robo-yarn/tree/2.x.svg?style=svg)](https://circleci.com/gh/Sweetchuck/robo-yarn/?branch=2.x)
+[![codecov](https://codecov.io/gh/Sweetchuck/robo-yarn/branch/2.x/graph/badge.svg?token=HSF16OGPyr)](https://app.codecov.io/gh/Sweetchuck/robo-yarn/branch/2.x)
 
 
 ## Supported commands
