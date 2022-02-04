@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Sweetchuck\Robo\Yarn\Test\Helper\RoboFiles;
+namespace Sweetchuck\Robo\Yarn\Tests\Helper\RoboFiles;
 
 use Sweetchuck\Robo\Yarn\YarnTaskLoader;
 use Robo\Contract\TaskInterface;

@@ -9,6 +9,7 @@ use Webmozart\PathUtil\Path;
 
 /**
  * @covers \Sweetchuck\Robo\Yarn\Task\NodeVersionTask<extended>
+ * @covers \Sweetchuck\Robo\Yarn\YarnTaskLoader
  */
 class NodeVersionTaskTest extends TaskTestBase
 {

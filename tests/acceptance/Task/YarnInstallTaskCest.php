@@ -2,13 +2,17 @@
 
 declare(strict_types = 1);
 
-namespace Sweetchuck\Robo\Yarn\Tests\Task;
+namespace Sweetchuck\Robo\Yarn\Tests\Acceptance\Task;
 
-use Sweetchuck\Robo\Yarn\Test\AcceptanceTester;
-use Sweetchuck\Robo\Yarn\Test\Helper\RoboFiles\YarnRoboFile;
+use Sweetchuck\Robo\Yarn\Tests\AcceptanceTester;
+use Sweetchuck\Robo\Yarn\Tests\Helper\RoboFiles\YarnRoboFile;
 use Symfony\Component\Filesystem\Filesystem;
 
-class YarnTaskCest
+/**
+ * @covers \Sweetchuck\Robo\Yarn\Task\YarnInstallTask
+ * @covers \Sweetchuck\Robo\Yarn\YarnTaskLoader
+ */
+class YarnInstallTaskCest
 {
     /**
      * @var string[]
@@ -126,21 +130,6 @@ class YarnTaskCest
         $I->assertEquals($expectedStdOutput, $I->getRoboTaskStdOutput($id));
         $I->assertEquals($expectedStdError, $I->getRoboTaskStdError($id));
         $I->assertFileNotExists("$tmpDir/node_modules");
-    }
-
-    public function runVersionSuccess(AcceptanceTester $I): void
-    {
-        $tmpDir = $this->createTmpDir('01');
-
-        $id = 'version';
-        $I->runRoboTask($id, YarnRoboFile::class, 'version:success', $tmpDir);
-
-        $expectedStdError = sprintf(
-            " [Yarn - Version] cd %s && yarn --version\n",
-            escapeshellarg($tmpDir)
-        );
-        $I->assertEquals(0, $I->getRoboTaskExitCode($id));
-        $I->assertEquals($expectedStdError, $I->getRoboTaskStdError($id));
     }
 
     protected function createTmpDir(string $fixture): string

@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Sweetchuck\Robo\Yarn\Test;
+namespace Sweetchuck\Robo\Yarn\Tests;
 
 /**
  * Inherited Methods
