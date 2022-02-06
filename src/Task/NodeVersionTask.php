@@ -8,6 +8,7 @@ use Icecave\SemVer\Version as SemVerVersion;
 use Exception;
 use Mindscreen\YarnLock\YarnLock;
 use Sweetchuck\Utils\Filesystem;
+use Sweetchuck\Utils\VersionNumber;
 
 /**
  * This task detects that which NodeJS version should be used in a certain directory.
@@ -157,14 +158,14 @@ class NodeVersionTask extends BaseTask
     {
         parent::runProcessOutputs();
         if (!empty($this->assets['full'])) {
-            $version = SemVerVersion::parse($this->assets['full']);
-            $this->assets['semVerVersion'] = $version;
-            $this->assets['major'] = $version->major();
-            $this->assets['minor'] = $version->minor();
-            $this->assets['patch'] = $version->patch();
-            $this->assets['preReleaseVersion'] = $version->preReleaseVersion();
-            $this->assets['buildMetaData'] = $version->buildMetaData();
-            $this->assets['base'] = sprintf('%d.%d.%d', $version->major(), $version->minor(), $version->patch());
+            $version = VersionNumber::createFromString($this->assets['full']);
+            $this->assets['versionNumber'] = $version;
+            $this->assets['major'] = $version->major;
+            $this->assets['minor'] = $version->minor;
+            $this->assets['patch'] = $version->patch;
+            $this->assets['preRelease'] = $version->preRelease;
+            $this->assets['metadata'] = $version->metadata;
+            $this->assets['base'] = $version->format($version::FORMAT_MA0DMI0DP0);
         }
 
         return $this;
