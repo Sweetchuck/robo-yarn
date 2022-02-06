@@ -61,11 +61,11 @@ class NodeVersionTaskTest extends TaskTestBase
                 [
                     'assets' => [
                         'package01.full' => '8.11.1-rc1+foo',
-                        'package01.major' => 8,
-                        'package01.minor' => 11,
-                        'package01.patch' => 1,
-                        'package01.preReleaseVersion' => 'rc1',
-                        'package01.buildMetaData' => 'foo',
+                        'package01.major' => '8',
+                        'package01.minor' => '11',
+                        'package01.patch' => '1',
+                        'package01.preRelease' => 'rc1',
+                        'package01.metadata' => 'foo',
                     ],
                 ],
                 [
@@ -221,6 +221,7 @@ class NodeVersionTaskTest extends TaskTestBase
 
         if (array_key_exists('assets', $expected)) {
             foreach ($expected['assets'] as $assetName => $assetValue) {
+                $this->tester->assertArrayHasKey($assetName, $result);
                 $this->tester->assertSame($assetValue, $result[$assetName]);
             }
         }
