@@ -5,7 +5,7 @@ declare(strict_types = 1);
 namespace Sweetchuck\Robo\Yarn\Tests\Unit\Task;
 
 use org\bovigo\vfs\vfsStream;
-use Webmozart\PathUtil\Path;
+use Symfony\Component\Filesystem\Path;
 
 /**
  * @covers \Sweetchuck\Robo\Yarn\Task\NodeVersionTask<extended>
