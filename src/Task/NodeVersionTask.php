@@ -4,7 +4,6 @@ declare(strict_types = 1);
 
 namespace Sweetchuck\Robo\Yarn\Task;
 
-use Icecave\SemVer\Version as SemVerVersion;
 use Exception;
 use Mindscreen\YarnLock\YarnLock;
 use Sweetchuck\Utils\Filesystem;

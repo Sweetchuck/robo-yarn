@@ -4,15 +4,14 @@ declare(strict_types = 1);
 
 namespace Sweetchuck\Robo\Yarn\Task;
 
+use Consolidation\AnnotatedCommand\Output\OutputAwareInterface;
 use League\Container\ContainerAwareInterface;
 use League\Container\ContainerAwareTrait;
 use Sweetchuck\Robo\Yarn\Option\BaseOptions;
 use Robo\Common\OutputAwareTrait;
-use Robo\Contract\OutputAwareInterface;
 use Robo\Result;
 use Robo\Task\BaseTask as RoboBaseTask;
 use Robo\TaskInfo;
-use Symfony\Component\Process\Process;
 
 abstract class BaseTask extends RoboBaseTask implements ContainerAwareInterface, OutputAwareInterface
 {
