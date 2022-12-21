@@ -4,10 +4,13 @@
 /tests/_support/_generated/
 /tests/*.suite.yml
 /codeception.yml
-/RoboFileLocal.php
 
 /vendor/
 
 /.git-hooks.local
+
+/phpcs.xml
+
 /robo.yml
+/RoboFileLocal.php
 /RoboFileExample.php
