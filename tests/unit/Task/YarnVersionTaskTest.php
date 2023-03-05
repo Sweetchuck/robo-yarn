@@ -4,25 +4,26 @@ declare(strict_types = 1);
 
 namespace Sweetchuck\Robo\Yarn\Tests\Unit\Task;
 
+use Codeception\Attribute\DataProvider;
 use Sweetchuck\Codeception\Module\RoboTaskRunner\DummyProcess;
+use Sweetchuck\Robo\Yarn\Task\YarnVersionTask;
 
 /**
- * @covers \Sweetchuck\Robo\Yarn\Task\YarnVersionTask<extended>
+ * @covers \Sweetchuck\Robo\Yarn\Task\YarnVersionTask
+ * @covers \Sweetchuck\Robo\Yarn\Task\CommonCliTask
+ * @covers \Sweetchuck\Robo\Yarn\Task\BaseCliTask
+ * @covers \Sweetchuck\Robo\Yarn\Task\BaseTask
+ * @covers \Sweetchuck\Robo\Yarn\Option\BaseOptions
+ * @covers \Sweetchuck\Robo\Yarn\Option\CommonOptions
  * @covers \Sweetchuck\Robo\Yarn\YarnTaskLoader
+ *
+ * @method YarnVersionTask createTask()
  */
 class YarnVersionTaskTest extends TaskTestBase
 {
-    /**
-     * @var \Sweetchuck\Robo\Yarn\Task\YarnVersionTask
-     */
-    protected $task;
-
-    /**
-     * @inheritDoc
-     */
-    protected function initTask()
+    protected function createTaskInstance(): YarnVersionTask
     {
-        $this->task = $this->taskBuilder->taskYarnVersion();
+        return new YarnVersionTask();
     }
 
     public function casesGetCommand(): array
@@ -45,13 +46,12 @@ class YarnVersionTaskTest extends TaskTestBase
         ];
     }
 
-    /**
-     * @dataProvider casesGetCommand
-     */
+    #[DataProvider('casesGetCommand')]
     public function testGetCommand(string $expected, array $options): void
     {
-        $this->task->setOptions($options);
-        $this->tester->assertSame($expected, $this->task->getCommand());
+        $task = $this->createTask();
+        $task->setOptions($options);
+        $this->tester->assertSame($expected, $task->getCommand());
     }
 
     public function testRunSuccess(): void
@@ -71,9 +71,10 @@ class YarnVersionTaskTest extends TaskTestBase
             'envVars' => $expected['envVars'] ?? [],
         ];
 
-        $this->task->setOptions($options);
+        $task = $this->createTask();
+        $task->setOptions($options);
 
-        $this->task->setEnvVar('MY_B', 'b');
+        $task->setEnvVar('MY_B', 'b');
         $expected['envVars']['MY_B'] = 'b';
 
         $processIndex = count(DummyProcess::$instances);
@@ -87,21 +88,21 @@ class YarnVersionTaskTest extends TaskTestBase
             'stdError' => '',
         ];
 
-        $result = $this->task->run();
+        $result = $task->run();
 
         $assetNamePrefix = $options['assetNamePrefix'] ?? '';
 
         $this->tester->assertSame(
             $expected['envVars']['MY_B'],
-            $this->task->getEnvVar('MY_B'),
-            'getEnvVar'
+            $task->getEnvVar('MY_B'),
+            'getEnvVar',
         );
 
         if (array_key_exists('exitCode', $options)) {
             $this->tester->assertSame(
                 $expected['exitCode'],
                 $result->getExitCode(),
-                'Exit code is different than the expected.'
+                'Exit code is different than the expected.',
             );
         }
 
@@ -109,7 +110,7 @@ class YarnVersionTaskTest extends TaskTestBase
             $this->tester->assertSame(
                 $expected['version'],
                 $result["{$assetNamePrefix}version"],
-                'Version number equals'
+                'Version number equals',
             );
         }
 
@@ -119,7 +120,7 @@ class YarnVersionTaskTest extends TaskTestBase
             $this->tester->assertSame(
                 $expected['processTimeout'],
                 $process->getTimeout(),
-                'Process timeout'
+                'Process timeout',
             );
         }
     }

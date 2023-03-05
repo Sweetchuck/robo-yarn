@@ -6,26 +6,14 @@ namespace Sweetchuck\Robo\Yarn\Task;
 
 class YarnVersionTask extends BaseCliTask
 {
-    /**
-     * {@inheritdoc}
-     */
-    protected $taskName = 'Yarn - Version';
+    protected string $taskName = 'Yarn - Version';
 
-    /**
-     * {@inheritdoc}
-     */
-    protected $action = '';
+    protected string $action = '';
 
-    /**
-     * {@inheritdoc}
-     */
-    protected $assets = [
+    protected array $assets = [
         'version' => null,
     ];
 
-    /**
-     * {@inheritdoc}
-     */
     protected function getOptions(): array
     {
         return [
@@ -36,10 +24,7 @@ class YarnVersionTask extends BaseCliTask
         ] + parent::getOptions();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function runProcessOutputs()
+    protected function runProcessOutputs(): static
     {
         if ($this->actionExitCode === 0) {
             $this->assets['version'] = trim($this->actionStdOutput);

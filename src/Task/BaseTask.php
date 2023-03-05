@@ -19,45 +19,24 @@ abstract class BaseTask extends RoboBaseTask implements ContainerAwareInterface,
     use OutputAwareTrait;
     use BaseOptions;
 
-    /**
-     * @var string
-     */
-    protected $taskName = '';
+    protected string $taskName = '';
 
-    /**
-     * @var array
-     */
-    protected $options = [];
+    protected array $options = [];
 
-    /**
-     * @var int
-     */
-    protected $actionExitCode = 0;
+    protected int $actionExitCode = 0;
 
-    /**
-     * @var string
-     */
-    protected $actionStdOutput = '';
+    protected string $actionStdOutput = '';
 
-    /**
-     * @var string
-     */
-    protected $actionStdError = '';
+    protected string $actionStdError = '';
 
-    /**
-     * @var array
-     */
-    protected $assets = [];
+    protected array $assets = [];
 
     protected function getOptions(): array
     {
         return $this->getOptionsBase();
     }
 
-    /**
-     * @return $this
-     */
-    public function setOptions(array $options)
+    public function setOptions(array $options): static
     {
         return $this->setOptionsBase($options);
     }
@@ -77,9 +56,6 @@ abstract class BaseTask extends RoboBaseTask implements ContainerAwareInterface,
             ->runReturn();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function runPrepare()
     {
         $this->options = $this->getOptions();
@@ -87,23 +63,14 @@ abstract class BaseTask extends RoboBaseTask implements ContainerAwareInterface,
         return $this;
     }
 
-    /**
-     * @return $this
-     */
-    protected function runHeader()
+    protected function runHeader(): static
     {
         return $this;
     }
 
-    /**
-     * @return $this
-     */
-    abstract protected function runAction();
+    abstract protected function runAction(): static;
 
-    /**
-     * @return $this
-     */
-    protected function runProcessOutputs()
+    protected function runProcessOutputs(): static
     {
         return $this;
     }

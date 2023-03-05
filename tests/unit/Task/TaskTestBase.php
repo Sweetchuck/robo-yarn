@@ -6,47 +6,35 @@ namespace Sweetchuck\Robo\Yarn\Tests\Unit\Task;
 
 use Codeception\Test\Unit;
 use League\Container\Container as LeagueContainer;
+use Psr\Container\ContainerInterface;
+use Robo\Application;
 use Robo\Collection\CollectionBuilder;
-use Robo\Config\Config;
+use Robo\Config\Config as RoboConfig;
 use Robo\Robo;
 use Sweetchuck\Codeception\Module\RoboTaskRunner\DummyOutput;
 use Sweetchuck\Codeception\Module\RoboTaskRunner\DummyProcess;
 use Sweetchuck\Codeception\Module\RoboTaskRunner\DummyProcessHelper;
+use Sweetchuck\Robo\Yarn\Task\BaseTask;
+use Sweetchuck\Robo\Yarn\Tests\UnitTester;
 use Sweetchuck\Robo\Yarn\Tests\Helper\Dummy\DummyTaskBuilder;
 use Symfony\Component\Console\Application as SymfonyApplication;
+use Symfony\Component\Console\Logger\ConsoleLogger;
+use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\ErrorHandler\BufferingLogger;
 
 abstract class TaskTestBase extends Unit
 {
-    /**
-     * @var \League\Container\Container
-     */
-    protected $container;
+    protected ContainerInterface $container;
 
-    /**
-     * @var \Robo\Config\Config
-     */
-    protected $config;
+    protected RoboConfig $config;
 
-    /**
-     * @var \Robo\Collection\CollectionBuilder
-     */
-    protected $builder;
+    protected CollectionBuilder $builder;
 
-    /**
-     * @var \Sweetchuck\Robo\Yarn\Tests\UnitTester
-     */
-    protected $tester;
+    protected UnitTester $tester;
 
-    /**
-     * @var \Sweetchuck\Robo\Yarn\Task\BaseCliTask
-     */
-    protected $task;
+    protected CollectionBuilder $Builder;
 
-    /**
-     * @var \Sweetchuck\Robo\Yarn\Tests\Helper\Dummy\DummyTaskBuilder
-     */
-    protected $taskBuilder;
+    protected DummyTaskBuilder $taskBuilder;
 
     /**
      * @inheritdoc
@@ -55,33 +43,51 @@ abstract class TaskTestBase extends Unit
     {
         parent::_before();
 
-        Robo::unsetContainer();
         DummyProcess::reset();
 
+        Robo::unsetContainer();
         $this->container = new LeagueContainer();
-        $application = new SymfonyApplication('Sweetchuck - Robo Yarn', '1.0.0');
+        $application = new SymfonyApplication('Sweetchuck - Robo PHPUnit', '3.0.0');
         $application->getHelperSet()->set(new DummyProcessHelper(), 'process');
-        $this->config = new Config();
+        $this->config = new RoboConfig();
         $input = null;
         $output = new DummyOutput([
-            'verbosity' => DummyOutput::VERBOSITY_DEBUG,
+            'verbosity' => OutputInterface::VERBOSITY_DEBUG,
         ]);
 
         $this->container->add('container', $this->container);
 
         Robo::configureContainer($this->container, $application, $this->config, $input, $output);
-        $this->container->addShared('logger', BufferingLogger::class);
+        $this->container->add('logger', BufferingLogger::class);
 
         $this->builder = CollectionBuilder::create($this->container, null);
         $this->taskBuilder = new DummyTaskBuilder();
         $this->taskBuilder->setContainer($this->container);
         $this->taskBuilder->setBuilder($this->builder);
-
-        $this->initTask();
     }
 
-    /**
-     * @return $this
-     */
-    abstract protected function initTask();
+    protected function createTask(): BaseTask
+    {
+        $container = new LeagueContainer();
+        $application = new Application('Sweetchuck - Yarn', '3.0.0');
+        $application->getHelperSet()->set(new DummyProcessHelper(), 'process');
+        $config = new RoboConfig();
+        $output = new DummyOutput([]);
+        $loggerOutput = new DummyOutput([]);
+        $logger = new ConsoleLogger($loggerOutput);
+
+        $container->add('output', $output);
+        $container->add('logger', $logger);
+        $container->add('config', $config);
+        $container->add('application', $application);
+
+        $task = $this->createTaskInstance();
+        $task->setContainer($container);
+        $task->setOutput($output);
+        $task->setLogger($logger);
+
+        return $task;
+    }
+
+    abstract protected function createTaskInstance(): BaseTask;
 }

@@ -18,10 +18,7 @@ class CommonCliTask extends BaseCliTask
         return $this->getOptionsCommon() + parent::getOptions();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function setOptions(array $options)
+    public function setOptions(array $options): static
     {
         parent::setOptions($options);
         $this->setOptionsCommon($options);

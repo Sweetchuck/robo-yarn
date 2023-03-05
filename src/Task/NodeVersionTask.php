@@ -15,27 +15,18 @@ use Sweetchuck\Utils\VersionNumber;
 class NodeVersionTask extends BaseTask
 {
 
-    /**
-     * {@inheritdoc}
-     */
-    protected $taskName = 'Yarn - Required NodeJS version';
+    protected string $taskName = 'Yarn - Version';
 
     // region Options
     // region rootDirectory
-    /**
-     * @var ?string
-     */
-    protected $rootDirectory = null;
+    protected ?string $rootDirectory = null;
 
     public function getRootDirectory(): ?string
     {
         return $this->rootDirectory;
     }
 
-    /**
-     * @return $this
-     */
-    public function setRootDirectory(?string $value)
+    public function setRootDirectory(?string $value): static
     {
         $this->rootDirectory = $value;
 
@@ -44,10 +35,7 @@ class NodeVersionTask extends BaseTask
     // endregion
     // endregion
 
-    /**
-     * {@inheritdoc}
-     */
-    public function setOptions(array $options)
+    public function setOptions(array $options): static
     {
         parent::setOptions($options);
 
@@ -58,9 +46,6 @@ class NodeVersionTask extends BaseTask
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function getOptions(): array
     {
         return [
@@ -71,10 +56,7 @@ class NodeVersionTask extends BaseTask
         ] + parent::getOptions();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function runAction()
+    protected function runAction(): static
     {
         $options = $this->getOptions();
         $wd = $options['workingDirectory']['value'] ?: '.';
@@ -105,10 +87,7 @@ class NodeVersionTask extends BaseTask
         return $this;
     }
 
-    /**
-     * @return $this
-     */
-    protected function runActionYarnLock(string $filePath)
+    protected function runActionYarnLock(string $filePath): static
     {
         $this->assets['full'] = null;
 
@@ -125,10 +104,7 @@ class NodeVersionTask extends BaseTask
         return $this;
     }
 
-    /**
-     * @return $this
-     */
-    protected function runActionPackageLock(string $filePath)
+    protected function runActionPackageLock(string $filePath): static
     {
         $lock = json_decode(Filesystem::fileGetContents($filePath), true);
         if ($lock === null) {
@@ -140,20 +116,14 @@ class NodeVersionTask extends BaseTask
         return $this;
     }
 
-    /**
-     * @return $this
-     */
-    protected function runActionNvmRc(string $filePath)
+    protected function runActionNvmRc(string $filePath): static
     {
         $this->assets['full'] = trim(Filesystem::fileGetContents($filePath)) ?: null;
 
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function runProcessOutputs()
+    protected function runProcessOutputs(): static
     {
         parent::runProcessOutputs();
         if (!empty($this->assets['full'])) {

@@ -2,7 +2,7 @@
 version: 2.1
 
 orbs:
-    codecov: 'codecov/codecov@3.0.0'
+    codecov: 'codecov/codecov@3.2.4'
 
 .env_app: &env_app
     SHELL: '/bin/bash'
@@ -24,29 +24,9 @@ executors:
         docker:
             -
                 name: 'main'
-                image: 'cimg/php:7.4'
-
-    php_plus1:
-        resource_class: 'small'
-        environment:
-            <<: *env_app
-            <<: *env_composer
-        docker:
-            -
-                name: 'main'
-                image: 'cimg/php:8.0'
-
-    php_plus2:
-        resource_class: 'small'
-        environment:
-            <<: *env_app
-            <<: *env_composer
-        docker:
-            -
-                name: 'main'
                 image: 'cimg/php:8.1'
 
-    php_plus3:
+    php_plus1:
         resource_class: 'small'
         environment:
             <<: *env_app
@@ -208,5 +188,3 @@ workflows:
                             executor:
                                 - 'php_min'
                                 - 'php_plus1'
-                                - 'php_plus2'
-                                - 'php_plus3'

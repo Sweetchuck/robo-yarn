@@ -6,31 +6,19 @@ namespace Sweetchuck\Robo\Yarn\Task;
 
 class YarnInstallTask extends CommonCliTask
 {
-    /**
-     * {@inheritdoc}
-     */
-    protected $taskName = 'Yarn - Install';
+    protected string $taskName = 'Yarn - Install';
 
-    /**
-     * {@inheritdoc}
-     */
-    protected $action = 'install';
+    protected string $action = 'install';
 
     // region Option - skipIfPackageJsonNotExists.
-    /**
-     * @var bool
-     */
-    protected $skipIfPackageJsonNotExists = false;
+    protected bool $skipIfPackageJsonNotExists = false;
 
     public function getSkipIfPackageJsonNotExists(): bool
     {
         return $this->skipIfPackageJsonNotExists;
     }
 
-    /**
-     * @return $this
-     */
-    public function setSkipIfPackageJsonNotExists(bool $value)
+    public function setSkipIfPackageJsonNotExists(bool $value): static
     {
         $this->skipIfPackageJsonNotExists = $value;
 
@@ -38,10 +26,7 @@ class YarnInstallTask extends CommonCliTask
     }
     // endregion
 
-    /**
-     * {@inheritdoc}
-     */
-    public function setOptions(array $options)
+    public function setOptions(array $options): static
     {
         parent::setOptions($options);
         if (array_key_exists('skipIfPackageJsonNotExists', $options)) {
@@ -51,10 +36,7 @@ class YarnInstallTask extends CommonCliTask
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function runHeader()
+    protected function runHeader(): static
     {
         if (!$this->isPackageJsonExists() && $this->getSkipIfPackageJsonNotExists()) {
             $this->printTaskInfo(
@@ -70,10 +52,7 @@ class YarnInstallTask extends CommonCliTask
         return parent::runHeader();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function runAction()
+    protected function runAction(): static
     {
         return (!$this->isPackageJsonExists() && $this->getSkipIfPackageJsonNotExists()) ?
             $this

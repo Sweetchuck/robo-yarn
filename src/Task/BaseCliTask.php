@@ -16,15 +16,9 @@ abstract class BaseCliTask extends BaseTask implements CommandInterface
     use OutputAwareTrait;
     use BaseOptions;
 
-    /**
-     * @var string
-     */
-    protected $action = '';
+    protected string $action = '';
 
-    /**
-     * @var string
-     */
-    protected $command = '';
+    protected string $command = '';
 
     /**
      * @var null|callable
@@ -32,20 +26,14 @@ abstract class BaseCliTask extends BaseTask implements CommandInterface
     protected $processRunCallbackWrapper = null;
 
     // region Option - processTimeout
-    /**
-     * @var null|float
-     */
-    protected $processTimeout = null;
+    protected null|int|float $processTimeout = null;
 
-    public function getProcessTimeout(): ?float
+    public function getProcessTimeout(): null|int|float
     {
         return $this->processTimeout;
     }
 
-    /**
-     * @return $this
-     */
-    public function setProcessTimeout(?float $processTimeout)
+    public function setProcessTimeout(null|int|float $processTimeout): static
     {
         $this->processTimeout = $processTimeout;
 
@@ -54,8 +42,7 @@ abstract class BaseCliTask extends BaseTask implements CommandInterface
     // endregion
 
     // region Option - envVars
-
-    protected $envVars = [];
+    protected array $envVars = [];
 
     public function getEnvVars(): array
     {
@@ -67,20 +54,14 @@ abstract class BaseCliTask extends BaseTask implements CommandInterface
         return $this->envVars[$name] ?? null;
     }
 
-    /**
-     * @return $this
-     */
-    public function setEnvVars(array $envVars)
+    public function setEnvVars(array $envVars): static
     {
         $this->envVars = $envVars;
 
         return $this;
     }
 
-    /**
-     * @return $this
-     */
-    public function setEnvVar(string $name, $value)
+    public function setEnvVar(string $name, $value): static
     {
         $this->envVars[$name] = (string) $value;
 
@@ -89,7 +70,7 @@ abstract class BaseCliTask extends BaseTask implements CommandInterface
 
     // endregion
 
-    public function setOptions(array $options)
+    public function setOptions(array $options): static
     {
         parent::setOptions($options);
 
@@ -245,7 +226,7 @@ abstract class BaseCliTask extends BaseTask implements CommandInterface
         return implode(' ', array_filter([$chDir, $env, $cmd, $asIs]));
     }
 
-    protected function runPrepare()
+    protected function runPrepare(): static
     {
         parent::runPrepare();
         $this->command = $this->getCommand();
@@ -256,20 +237,14 @@ abstract class BaseCliTask extends BaseTask implements CommandInterface
         return $this;
     }
 
-    /**
-     * @return $this
-     */
-    protected function runHeader()
+    protected function runHeader(): static
     {
         $this->printTaskInfo($this->command);
 
         return $this;
     }
 
-    /**
-     * @return $this
-     */
-    protected function runAction()
+    protected function runAction(): static
     {
         // @todo Remove this once drupal/core uses symfony/process:^4.
         $processInner =  is_callable([Process::class, 'fromShellCommandline']) ?

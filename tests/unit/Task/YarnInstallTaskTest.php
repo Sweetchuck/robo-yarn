@@ -4,24 +4,25 @@ declare(strict_types = 1);
 
 namespace Sweetchuck\Robo\Yarn\Tests\Unit\Task;
 
+use Sweetchuck\Robo\Yarn\Task\YarnInstallTask;
+
 /**
- * @covers \Sweetchuck\Robo\Yarn\Task\YarnInstallTask<extended>
+ * @covers \Sweetchuck\Robo\Yarn\Task\YarnInstallTask
+ * @covers \Sweetchuck\Robo\Yarn\Task\CommonCliTask
+ * @covers \Sweetchuck\Robo\Yarn\Task\BaseCliTask
+ * @covers \Sweetchuck\Robo\Yarn\Task\BaseTask
+ * @covers \Sweetchuck\Robo\Yarn\Option\BaseOptions
+ * @covers \Sweetchuck\Robo\Yarn\Option\CommonOptions
  * @covers \Sweetchuck\Robo\Yarn\YarnTaskLoader
+ *
+ * @method YarnInstallTask createTask()
  */
 class YarnInstallTaskTest extends TaskTestBase
 {
 
-    /**
-     * @var \Sweetchuck\Robo\Yarn\Task\YarnInstallTask
-     */
-    protected $task;
-
-    /**
-     * @inheritDoc
-     */
-    protected function initTask()
+    protected function createTaskInstance(): YarnInstallTask
     {
-        $this->task = $this->taskBuilder->taskYarnInstall();
+        return new YarnInstallTask();
     }
 
     public function casesGetCommand(): array
@@ -214,14 +215,16 @@ class YarnInstallTaskTest extends TaskTestBase
      */
     public function testGetCommand(string $expected, array $options): void
     {
-        $this->task->setOptions($options);
-        $this->tester->assertSame($expected, $this->task->getCommand());
+        $task = $this->createTask();
+        $task->setOptions($options);
+        $this->tester->assertSame($expected, $task->getCommand());
     }
 
     public function testGetSetSkipIfPackageJsonNotExists(): void
     {
-        $this->tester->assertSame(false, $this->task->getSkipIfPackageJsonNotExists());
-        $this->task->setOptions(['skipIfPackageJsonNotExists' => true]);
-        $this->tester->assertSame(true, $this->task->getSkipIfPackageJsonNotExists());
+        $task = $this->createTask();
+        $this->tester->assertSame(false, $task->getSkipIfPackageJsonNotExists());
+        $task->setOptions(['skipIfPackageJsonNotExists' => true]);
+        $this->tester->assertSame(true, $task->getSkipIfPackageJsonNotExists());
     }
 }

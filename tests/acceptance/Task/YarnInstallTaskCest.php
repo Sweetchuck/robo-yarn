@@ -10,6 +10,8 @@ use Symfony\Component\Filesystem\Filesystem;
 
 /**
  * @covers \Sweetchuck\Robo\Yarn\Task\YarnInstallTask
+ * @covers \Sweetchuck\Robo\Yarn\Task\BaseCliTask
+ * @covers \Sweetchuck\Robo\Yarn\Task\BaseTask
  * @covers \Sweetchuck\Robo\Yarn\YarnTaskLoader
  */
 class YarnInstallTaskCest

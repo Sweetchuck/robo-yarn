@@ -9,7 +9,9 @@ use Sweetchuck\Robo\Yarn\Tests\Helper\RoboFiles\YarnRoboFile;
 use Symfony\Component\Filesystem\Filesystem;
 
 /**
- * @covers \Sweetchuck\Robo\Yarn\Task\YarnVersionTask<extended>
+ * @covers \Sweetchuck\Robo\Yarn\Task\YarnVersionTask
+ * @covers \Sweetchuck\Robo\Yarn\Task\BaseCliTask
+ * @covers \Sweetchuck\Robo\Yarn\Task\BaseTask
  * @covers \Sweetchuck\Robo\Yarn\YarnTaskLoader
  */
 class YarnVersionTaskCest

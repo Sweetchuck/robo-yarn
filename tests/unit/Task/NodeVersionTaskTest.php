@@ -4,27 +4,28 @@ declare(strict_types = 1);
 
 namespace Sweetchuck\Robo\Yarn\Tests\Unit\Task;
 
+use Codeception\Attribute\DataProvider;
 use org\bovigo\vfs\vfsStream;
+use Sweetchuck\Robo\Yarn\Task\NodeVersionTask;
 use Symfony\Component\Filesystem\Path;
 
 /**
- * @covers \Sweetchuck\Robo\Yarn\Task\NodeVersionTask<extended>
+ * @covers \Sweetchuck\Robo\Yarn\Task\NodeVersionTask
+ * @covers \Sweetchuck\Robo\Yarn\Task\CommonCliTask
+ * @covers \Sweetchuck\Robo\Yarn\Task\BaseCliTask
+ * @covers \Sweetchuck\Robo\Yarn\Task\BaseTask
+ * @covers \Sweetchuck\Robo\Yarn\Option\BaseOptions
+ * @covers \Sweetchuck\Robo\Yarn\Option\CommonOptions
  * @covers \Sweetchuck\Robo\Yarn\YarnTaskLoader
+ *
+ * @method NodeVersionTask createTask()
  */
 class NodeVersionTaskTest extends TaskTestBase
 {
 
-    /**
-     * @var \Sweetchuck\Robo\Yarn\Task\NodeVersionTask
-     */
-    protected $task;
-
-    /**
-     * @inheritDoc
-     */
-    protected function initTask()
+    protected function createTaskInstance(): NodeVersionTask
     {
-        $this->task = $this->taskBuilder->taskYarnNodeVersion();
+        return new NodeVersionTask();
     }
 
     public function casesRunSuccess(): array
@@ -189,14 +190,12 @@ class NodeVersionTaskTest extends TaskTestBase
         ];
     }
 
-    /**
-     * @dataProvider casesRunSuccess
-     */
+    #[DataProvider('casesRunSuccess')]
     public function testRunSuccess(array $expected, array $fsStructure, array $options = []): void
     {
         $rootDirName = implode('.', [
             str_replace('\\', '_', static::class),
-            $this->getName(false),
+            $this->name(),
             $this->dataName(),
         ]);
 
@@ -211,9 +210,10 @@ class NodeVersionTaskTest extends TaskTestBase
             $options['workingDirectory'] ?? ''
         );
 
-        $this->task->setOptions($options);
+        $task = $this->createTask();
+        $task->setOptions($options);
 
-        $result = $this->task->run();
+        $result = $task->run();
 
         if (array_key_exists('exitCode', $expected)) {
             $this->tester->assertSame($expected['exitCode'], $result->getExitCode());
