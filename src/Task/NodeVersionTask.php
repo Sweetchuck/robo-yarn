@@ -6,7 +6,7 @@ namespace Sweetchuck\Robo\Yarn\Task;
 
 use Exception;
 use Mindscreen\YarnLock\YarnLock;
-use Sweetchuck\Utils\Filesystem;
+use Sweetchuck\Utils\FileSystemUtils;
 use Sweetchuck\Utils\VersionNumber;
 
 /**
@@ -16,6 +16,8 @@ class NodeVersionTask extends BaseTask
 {
 
     protected string $taskName = 'Yarn - Version';
+
+    protected FileSystemUtils $fsUtils;
 
     // region Options
     // region rootDirectory
@@ -56,6 +58,11 @@ class NodeVersionTask extends BaseTask
         ] + parent::getOptions();
     }
 
+    public function __construct(?FileSystemUtils $fsUtils = null)
+    {
+        $this->fsUtils = $fsUtils ?: new FileSystemUtils();
+    }
+
     protected function runAction(): static
     {
         $options = $this->getOptions();
@@ -63,14 +70,14 @@ class NodeVersionTask extends BaseTask
         $rootDir = $options['rootDirectory']['value'];
 
         $fileName = 'yarn.lock';
-        $dir = Filesystem::findFileUpward($fileName, $wd, $rootDir);
+        $dir = $this->fsUtils->findFileUpward($fileName, $wd, $rootDir);
         if ($dir !== null) {
             $this->runActionYarnLock("$dir/$fileName");
         }
 
         if (!isset($this->assets['full'])) {
             $fileName = 'package-lock.json';
-            $dir = Filesystem::findFileUpward($fileName, $wd, $rootDir);
+            $dir = $this->fsUtils->findFileUpward($fileName, $wd, $rootDir);
             if ($dir !== null) {
                 $this->runActionPackageLock("$dir/$fileName");
             }
@@ -78,7 +85,7 @@ class NodeVersionTask extends BaseTask
 
         if (!isset($this->assets['full'])) {
             $fileName = '.nvmrc';
-            $dir = Filesystem::findFileUpward($fileName, $wd, $rootDir);
+            $dir = $this->fsUtils->findFileUpward($fileName, $wd, $rootDir);
             if ($dir !== null) {
                 $this->runActionNvmRc("$dir/$fileName");
             }
@@ -92,7 +99,7 @@ class NodeVersionTask extends BaseTask
         $this->assets['full'] = null;
 
         try {
-            $yarnLock = YarnLock::fromString(Filesystem::fileGetContents($filePath));
+            $yarnLock = YarnLock::fromString($this->fsUtils->fileGetContents($filePath));
         } catch (Exception $e) {
             return $this;
         }
@@ -106,7 +113,7 @@ class NodeVersionTask extends BaseTask
 
     protected function runActionPackageLock(string $filePath): static
     {
-        $lock = json_decode(Filesystem::fileGetContents($filePath), true);
+        $lock = json_decode($this->fsUtils->fileGetContents($filePath), true);
         if ($lock === null) {
             throw new Exception(json_last_error_msg(), json_last_error());
         }
@@ -118,7 +125,7 @@ class NodeVersionTask extends BaseTask
 
     protected function runActionNvmRc(string $filePath): static
     {
-        $this->assets['full'] = trim(Filesystem::fileGetContents($filePath)) ?: null;
+        $this->assets['full'] = trim($this->fsUtils->fileGetContents($filePath)) ?: null;
 
         return $this;
     }
