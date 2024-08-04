@@ -4,16 +4,20 @@ declare(strict_types = 1);
 
 namespace Sweetchuck\Robo\Yarn\Tests\Acceptance\Task;
 
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\CoversTrait;
+use Sweetchuck\Robo\Yarn\Task\BaseCliTask;
+use Sweetchuck\Robo\Yarn\Task\BaseTask;
+use Sweetchuck\Robo\Yarn\Task\YarnVersionTask;
 use Sweetchuck\Robo\Yarn\Tests\AcceptanceTester;
 use Sweetchuck\Robo\Yarn\Tests\Helper\RoboFiles\YarnRoboFile;
+use Sweetchuck\Robo\Yarn\YarnTaskLoader;
 use Symfony\Component\Filesystem\Filesystem;
 
-/**
- * @covers \Sweetchuck\Robo\Yarn\Task\YarnVersionTask
- * @covers \Sweetchuck\Robo\Yarn\Task\BaseCliTask
- * @covers \Sweetchuck\Robo\Yarn\Task\BaseTask
- * @covers \Sweetchuck\Robo\Yarn\YarnTaskLoader
- */
+#[CoversClass(YarnVersionTask::class)]
+#[CoversClass(BaseCliTask::class)]
+#[CoversClass(BaseTask::class)]
+#[CoversTrait(YarnTaskLoader::class)]
 class YarnVersionTaskCest
 {
     /**

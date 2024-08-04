@@ -4,19 +4,27 @@ declare(strict_types = 1);
 
 namespace Sweetchuck\Robo\Yarn\Tests\Unit\Task;
 
+use Codeception\Attribute\DataProvider;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\CoversTrait;
+use Sweetchuck\Robo\Yarn\Option\BaseOptions;
+use Sweetchuck\Robo\Yarn\Option\CommonOptions;
+use Sweetchuck\Robo\Yarn\Task\BaseCliTask;
+use Sweetchuck\Robo\Yarn\Task\BaseTask;
+use Sweetchuck\Robo\Yarn\Task\CommonCliTask;
 use Sweetchuck\Robo\Yarn\Task\YarnInstallTask;
+use Sweetchuck\Robo\Yarn\YarnTaskLoader;
 
 /**
- * @covers \Sweetchuck\Robo\Yarn\Task\YarnInstallTask
- * @covers \Sweetchuck\Robo\Yarn\Task\CommonCliTask
- * @covers \Sweetchuck\Robo\Yarn\Task\BaseCliTask
- * @covers \Sweetchuck\Robo\Yarn\Task\BaseTask
- * @covers \Sweetchuck\Robo\Yarn\Option\BaseOptions
- * @covers \Sweetchuck\Robo\Yarn\Option\CommonOptions
- * @covers \Sweetchuck\Robo\Yarn\YarnTaskLoader
- *
- * @method YarnInstallTask createTask()
+ * @method \Sweetchuck\Robo\Yarn\Task\YarnInstallTask createTask()
  */
+#[CoversClass(YarnInstallTask::class)]
+#[CoversClass(CommonCliTask::class)]
+#[CoversClass(BaseCliTask::class)]
+#[CoversClass(BaseTask::class)]
+#[CoversTrait(BaseOptions::class)]
+#[CoversTrait(CommonOptions::class)]
+#[CoversTrait(YarnTaskLoader::class)]
 class YarnInstallTaskTest extends TaskTestBase
 {
 
@@ -25,7 +33,7 @@ class YarnInstallTaskTest extends TaskTestBase
         return new YarnInstallTask();
     }
 
-    public function casesGetCommand(): array
+    public static function casesGetCommand(): array
     {
         return [
             'basic' => [
@@ -210,9 +218,7 @@ class YarnInstallTaskTest extends TaskTestBase
         ];
     }
 
-    /**
-     * @dataProvider casesGetCommand
-     */
+    #[DataProvider('casesGetCommand')]
     public function testGetCommand(string $expected, array $options): void
     {
         $task = $this->createTask();

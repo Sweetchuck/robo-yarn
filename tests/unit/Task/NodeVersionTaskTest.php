@@ -6,20 +6,27 @@ namespace Sweetchuck\Robo\Yarn\Tests\Unit\Task;
 
 use Codeception\Attribute\DataProvider;
 use org\bovigo\vfs\vfsStream;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\CoversTrait;
+use Sweetchuck\Robo\Yarn\Option\BaseOptions;
+use Sweetchuck\Robo\Yarn\Option\CommonOptions;
+use Sweetchuck\Robo\Yarn\Task\BaseCliTask;
+use Sweetchuck\Robo\Yarn\Task\BaseTask;
+use Sweetchuck\Robo\Yarn\Task\CommonCliTask;
 use Sweetchuck\Robo\Yarn\Task\NodeVersionTask;
+use Sweetchuck\Robo\Yarn\YarnTaskLoader;
 use Symfony\Component\Filesystem\Path;
 
 /**
- * @covers \Sweetchuck\Robo\Yarn\Task\NodeVersionTask
- * @covers \Sweetchuck\Robo\Yarn\Task\CommonCliTask
- * @covers \Sweetchuck\Robo\Yarn\Task\BaseCliTask
- * @covers \Sweetchuck\Robo\Yarn\Task\BaseTask
- * @covers \Sweetchuck\Robo\Yarn\Option\BaseOptions
- * @covers \Sweetchuck\Robo\Yarn\Option\CommonOptions
- * @covers \Sweetchuck\Robo\Yarn\YarnTaskLoader
- *
- * @method NodeVersionTask createTask()
+ * @method \Sweetchuck\Robo\Yarn\Task\NodeVersionTask createTask()
  */
+#[CoversClass(NodeVersionTask::class)]
+#[CoversClass(CommonCliTask::class)]
+#[CoversClass(BaseCliTask::class)]
+#[CoversClass(BaseTask::class)]
+#[CoversTrait(BaseOptions::class)]
+#[CoversTrait(CommonOptions::class)]
+#[CoversTrait(YarnTaskLoader::class)]
 class NodeVersionTaskTest extends TaskTestBase
 {
 
